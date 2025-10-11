@@ -1,0 +1,5 @@
+{
+  "name": "Sora Prompt Architect",
+  "description": "An AI-powered application to create, refine, and manage detailed prompts for text-to-video models like Sora. Describe your vision, select cinematic parameters, and let the AI craft the perfect prompt. Save your creations to a gallery and remix them for endless possibilities.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,201 @@
+
+{
+  "header": {
+    "title": "Sora Prompt Architect"
+  },
+  "buttons": {
+    "getSuggestions": "✨ Get AI Suggestions",
+    "applySuggestions": "Apply Suggestions to Description",
+    "thinking": "Thinking...",
+    "generate": "🚀 Generate Prompt",
+    "generating": "Generating...",
+    "copied": "Copied!",
+    "copy": "📋 Copy Prompt",
+    "save": "💾 Save to Gallery"
+  },
+  "promptForm": {
+    "title": "🎬 Composition Panel",
+    "subtitle": "Build your video prompt shot by shot for ultimate creative control.",
+    "startNew": "Start New",
+    "remixingMessage": "Remixing a scene. Adjust the settings below or click \"Start New\".",
+    "importedMessage": "Editing an imported prompt. Adjust the deconstructed settings below to refine and regenerate.",
+    "sceneDescriptionLabel": "Overall Scene Description (Core idea, environment, mood)",
+    "sceneDescriptionPlaceholder": "e.g., A cyberpunk city alley, drenched in neon rain, where a lone detective finds a mysterious glowing artifact.",
+    "cameosLabel": "🎭 Characters / Cameos",
+    "cameosPlaceholder": "e.g., A grizzled cyborg, a hologram geisha",
+    "cameoConsentLabel": "I have consent to use the likeness of any real people.",
+    "cameoConsentDescription": "You must have permission before using the names or likenesses of real individuals.",
+    "aspectRatioLabel": "Format / Aspect Ratio",
+    "addShot": "➕ Add Another Shot",
+    "import": {
+      "button": "Import",
+      "tooltip": "Import an existing prompt to deconstruct and improve it",
+      "modalTitle": "Deconstruct Existing Prompt",
+      "modalSubtitle": "Paste your existing prompt below. The AI will analyze it and break it down into the structured editor.",
+      "placeholder": "Paste your full Sora prompt here...",
+      "cancel": "Cancel",
+      "deconstructButton": "Deconstruct with AI",
+      "deconstructingButton": "Deconstructing...",
+      "errorMessage": "Failed to deconstruct prompt. The AI could not understand the text or a network error occurred."
+    },
+    "guidelines": {
+      "title": "Creative Guidelines",
+      "one": "Avoid requesting violent, hateful, or explicit content.",
+      "two": "Do not use copyrighted music or audio in your sound descriptions.",
+      "three": "Ensure all generated content is clearly marked as AI-created when shared."
+    },
+    "suggestions": {
+      "title": "AI Suggestions",
+      "loading": "Asking the AI for ideas...",
+      "divider": "--- AI Suggestions ---"
+    },
+    "error": {
+      "descriptionNeeded": "Please enter a scene description first.",
+      "suggestionsFailed": "Could not fetch suggestions. Please try again.",
+      "cameoConsentNeeded": "Please confirm cameo consent before generating"
+    }
+  },
+  "shotEditor": {
+    "title": "🎬 Shot #{{index}}",
+    "delete": "Delete Shot",
+    "descriptionPlaceholder": "Action, details, physical interactions (e.g., water splashing, heavy object impact)...",
+    "constraintsPlaceholder": "Constraints / Negative prompt (e.g., no people, avoid fast cuts, natural lighting only)...",
+    "tabs": {
+      "camera": "📷 Camera",
+      "style": "🎨 Style",
+      "context": "🌍 Context"
+    }
+  },
+  "advancedSettings": {
+    "title": "🔬 Advanced Physics & Audio",
+    "physicsEngine": "Physics Engine",
+    "weightAndRigidity": "Object Weight & Rigidity",
+    "weightAndRigidityPlaceholder": "e.g., Objects have significant weight; fabrics are stiff.",
+    "materialInteractions": "Material Properties & Interactions",
+    "materialInteractionsPlaceholder": "e.g., Heavy raindrops splash realistically; glass shatters into fine pieces.",
+    "environmentalForces": "Environmental Forces",
+    "environmentalForcesPlaceholder": "e.g., Low gravity; strong winds affect character movement.",
+    "soundscape": "Soundscape",
+    "dialogue": "Dialogue Details",
+    "dialoguePlaceholder": "e.g., A character whispers, 'I've been waiting...'",
+    "sfx": "Specific Sound Effects (SFX)",
+    "sfxPlaceholder": "e.g., Sizzling rain, distant sirens, the crackle of a neon sign.",
+    "music": "Ambient Music & Cues",
+    "musicPlaceholder": "e.g., A low, tense synthesizer score swells; music cuts out on impact."
+  },
+  "cameraEffects": {
+    "title": "🎥 Scene-Wide Camera Effects",
+    "description": "Set default camera behaviors for all shots. These can be overridden in individual shot parameters.",
+    "cameraAnimation": "Camera Animation"
+  },
+  "generatedPrompt": {
+    "title": "✨ Generated Prompt",
+    "versionNotesLabel": "Version Notes (Optional Changelog)",
+    "versionNotesPlaceholder": "e.g., v2: Changed lens to 85mm, added rain.",
+    "saveDisabledTooltip": "Generate a new prompt to save",
+    "saveTooltip": "Save to Gallery"
+  },
+  "gallery": {
+    "title": "🖼️ Scene Gallery",
+    "empty": {
+      "title": "📭 Your Gallery is Empty",
+      "subtitle": "Generate and save scenes to see them here."
+    },
+    "visibility": {
+      "public": "Public",
+      "private": "Private"
+    },
+    "visibilityTooltip": {
+      "makePrivate": "Click to make private",
+      "makePublic": "Click to make public"
+    },
+    "versionNotes": "VERSION NOTES:",
+    "sceneIdea": "Scene Idea:",
+    "shots": "Shots:",
+    "format": "Format:",
+    "cameoConsent": "Cameo Consent:",
+    "acknowledged": "Acknowledged",
+    "remixScene": "Remix Latest Version",
+    "deleteScene": "Delete Scene",
+    "history": "View Version History",
+    "versionHistoryTitle": "📜 Version History",
+    "remixThisVersion": "🔄 Remix This Version",
+    "versionCreatedOn": "Created:",
+    "versionNotesLabel": "Notes:",
+    "latest": "(Latest)"
+  },
+  "promptOptions": {
+    "labels": {
+        "shotType": "Shot Type",
+        "cameraAngle": "Camera Angle",
+        "cameraMovement": "Camera Movement",
+        "lens": "Lens",
+        "composition": "Composition",
+        "lighting": "Lighting",
+        "style": "Style",
+        "filmQuality": "Film Quality",
+        "pacing": "Pacing",
+        "timeOfDay": "Time Of Day",
+        "location": "Location",
+        "depthOfField": "Depth of Field",
+        "texture": "Texture",
+        "colorPalette": "Color Palette",
+        "genre": "Genre"
+    },
+    "aspectRatio": {
+        "widescreen": "16:9 (Widescreen)",
+        "vertical": "9:16 (Vertical)",
+        "square": "1:1 (Square)",
+        "classic": "4:3 (Classic TV)",
+        "cinemascope": "2.39:1 (Cinemascope)"
+    },
+    "genre": {
+        "drama": "Drama", "action": "Action", "comedy": "Comedy", "sciFi": "Sci-Fi", "horror": "Horror", "fantasy": "Fantasy", "documentary": "Documentary", "thriller": "Thriller"
+    },
+    "shotType": {
+        "extremeCloseUp": "Extreme Close-Up", "closeUp": "Close-Up", "mediumShot": "Medium Shot", "longShot": "Long Shot", "establishingShot": "Establishing Shot", "pov": "Point of View (POV)"
+    },
+    "cameraAngle": {
+        "eyeLevel": "Eye-Level", "highAngle": "High Angle", "lowAngle": "Low Angle", "dutchAngle": "Dutch Angle", "birdsEyeView": "Bird's-Eye View"
+    },
+    "cameraMovement": {
+        "none": "Static", "pan": "Pan", "tilt": "Tilt", "dollyZoom": "Dolly Zoom", "craneShot": "Crane Shot", "handheld": "Handheld / Shaky Cam", "droneShot": "Drone Shot", "gimbal": "Gimbal / Steadicam"
+    },
+    "lens": {
+        "24": "24mm (Wide Angle)", "35": "35mm (Standard)", "50": "50mm (Natural)", "85": "85mm (Portrait)", "135": "135mm (Telephoto)"
+    },
+    "composition": {
+        "ruleOfThirds": "Rule of Thirds", "leadingLines": "Leading Lines", "centered": "Centered", "symmetry": "Symmetry", "frameWithinFrame": "Frame Within a Frame"
+    },
+    "lighting": {
+        "cinematic": "Cinematic Lighting", "goldenHour": "Golden Hour", "blueHour": "Blue Hour", "highKey": "High-Key Lighting", "lowKey": "Low-Key / Chiaroscuro", "neon": "Neon Lighting", "backlight": "Backlight / Rim Light", "studio": "Studio Lighting"
+    },
+    "style": {
+        "photorealistic": "Photorealistic", "cinematicFilm": "Cinematic Film", "denisVilleneuve": "Cinematography like Denis Villeneuve", "wesAnderson": "Style of Wes Anderson", "quentinTarantino": "Style of Quentin Tarantino", "anime": "Anime", "documentary": "Documentary", "foundFootage": "Found Footage", "threeDRender": "3D Render", "macroPhotography": "Macro Photography", "fantasyArt": "Fantasy Art", "vaporwave": "Vaporwave"
+    },
+    "filmQuality": {
+        "fourK": "Crisp 4K", "eightK": "Hyper-detailed 8K", "thirtyFiveMM": "35mm Film Grain", "sixteenMM": "16mm Film Grain", "vhs": "VHS Look", "imax": "IMAX Quality"
+    },
+    "pacing": {
+        "normal": "Normal Speed", "slowMotion": "Slow-Motion", "fastMotion": "Fast-Motion", "timeLapse": "Time-lapse"
+    },
+    "timeOfDay": {
+        "daytime": "Daytime", "nighttime": "Nighttime", "dawn": "Dawn", "dusk": "Dusk", "midnight": "Midnight"
+    },
+    "location": {
+        "unspecified": "Unspecified", "cityscape": "Cityscape", "forest": "Forest", "ocean": "Ocean", "mountains": "Mountains", "desert": "Desert", "sciFiInterior": "Sci-Fi Interior"
+    },
+    "depthOfField": {
+        "natural": "Natural", "shallow": "Shallow (Bokeh)", "deep": "Deep / Everything in Focus", "rackFocus": "Rack Focus effect"
+    },
+    "texture": {
+        "standard": "Standard Definition", "smooth": "Smooth / Glossy", "rough": "Rough / Matte", "heavyGrain": "Heavy Film Grain", "sharp": "Sharp and Clean"
+    },
+    "colorPalette": {
+        "vibrant": "Vibrant and Saturated", "muted": "Muted and Desaturated", "monochromatic": "Monochromatic / B&W", "pastel": "Pastel Colors", "neon": "Neon / Synthwave", "warm": "Warm Tones", "cool": "Cool Tones"
+    },
+    "cameraMovementOptions": {
+        "none": "Static", "pan": "Pan", "tilt": "Tilt", "dolly": "Dolly", "zoom": "Zoom", "dollyZoom": "Dolly Zoom (Vertigo)", "craneShot": "Crane Shot", "handheld": "Handheld / Shaky Cam", "droneShot": "Drone Shot", "gimbal": "Gimbal / Steadicam", "slow": "Slow", "normal": "Normal", "fast": "Fast/Quick", "left": "Left", "right": "Right", "up": "Up", "down": "Down", "in": "In", "out": "Out"
+    }
+  }
+}

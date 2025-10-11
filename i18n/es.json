@@ -1,0 +1,183 @@
+
+{
+  "header": {
+    "title": "Arquitecto de Prompts de Sora"
+  },
+  "buttons": {
+    "getSuggestions": "✨ Obtener Sugerencias de IA",
+    "applySuggestions": "Aplicar Sugerencias a la Descripción",
+    "thinking": "Pensando...",
+    "generate": "🚀 Generar Prompt",
+    "generating": "Generando...",
+    "copied": "¡Copiado!",
+    "copy": "📋 Copiar Prompt",
+    "save": "💾 Guardar en Galería"
+  },
+  "promptForm": {
+    "title": "🎬 Panel de Composición",
+    "subtitle": "Construye tu prompt de video toma por toma para un control creativo total.",
+    "startNew": "Empezar de Nuevo",
+    "remixingMessage": "Remezclando una escena. Ajusta la configuración o haz clic en \"Empezar de Nuevo\".",
+    "importedMessage": "Editando un prompt importado. Ajusta la configuración deconstruida para refinar y regenerar.",
+    "sceneDescriptionLabel": "Descripción General de la Escena (Idea principal, ambiente, atmósfera)",
+    "sceneDescriptionPlaceholder": "Ej: Un callejón de una ciudad ciberpunk, bañado en lluvia de neón, donde un detective solitario encuentra un misterioso artefacto brillante.",
+    "cameosLabel": "🎭 Personajes / Cameos",
+    "cameosPlaceholder": "Ej: Un cíborg canoso, una geisha holograma",
+    "cameoConsentLabel": "Tengo consentimiento para usar la imagen de personas reales.",
+    "cameoConsentDescription": "Debes tener permiso antes de usar nombres o imágenes de personas reales.",
+    "aspectRatioLabel": "Formato / Relación de Aspecto",
+    "addShot": "➕ Añadir Otra Toma",
+    "import": {
+      "button": "Importar",
+      "tooltip": "Importa un prompt existente para deconstruirlo y mejorarlo",
+      "modalTitle": "Deconstruir Prompt Existente",
+      "modalSubtitle": "Pega tu prompt existente abajo. La IA lo analizará y lo desglosará en el editor estructurado.",
+      "placeholder": "Pega tu prompt completo de Sora aquí...",
+      "cancel": "Cancelar",
+      "deconstructButton": "Deconstruir con IA",
+      "deconstructingButton": "Deconstruyendo...",
+      "errorMessage": "Fallo al deconstruir el prompt. La IA no pudo entender el texto o hubo un error de red."
+    },
+    "guidelines": {
+      "title": "Directrices Creativas",
+      "one": "Evita solicitar contenido violento, de odio o explícito.",
+      "two": "No uses música o audio con derechos de autor en tus descripciones de sonido.",
+      "three": "Asegúrate de que todo el contenido generado esté claramente marcado como creado por IA al compartirlo."
+    },
+    "suggestions": {
+      "title": "Sugerencias de la IA",
+      "loading": "Pidiendo ideas a la IA...",
+      "divider": "--- Sugerencias de IA ---"
+    },
+    "error": {
+      "descriptionNeeded": "Por favor, introduce primero una descripción de la escena.",
+      "suggestionsFailed": "No se pudieron obtener sugerencias. Por favor, inténtalo de nuevo.",
+      "cameoConsentNeeded": "Por favor, confirma el consentimiento de cameo antes de generar"
+    }
+  },
+  "shotEditor": {
+    "title": "🎬 Toma #{{index}}",
+    "delete": "Eliminar Toma",
+    "descriptionPlaceholder": "Acción, detalles, interacciones físicas (ej: salpicaduras de agua, impacto de objeto pesado)...",
+    "constraintsPlaceholder": "Restricciones / Prompt negativo (ej: sin gente, evitar cortes rápidos, solo luz natural)...",
+    "tabs": {
+      "camera": "📷 Cámara",
+      "style": "🎨 Estilo",
+      "context": "🌍 Contexto"
+    }
+  },
+  "advancedSettings": {
+    "title": "🔬 Física y Audio Avanzados",
+    "physicsEngine": "Motor de Física",
+    "weightAndRigidity": "Peso y Rigidez de Objetos",
+    "weightAndRigidityPlaceholder": "Ej: Los objetos tienen un peso significativo; las telas son rígidas.",
+    "materialInteractions": "Propiedades e Interacciones de Materiales",
+    "materialInteractionsPlaceholder": "Ej: Las gotas de lluvia pesadas salpican de forma realista; el vidrio se rompe en finos pedazos.",
+    "environmentalForces": "Fuerzas Ambientales",
+    "environmentalForcesPlaceholder": "Ej: Gravedad baja; vientos fuertes afectan el movimiento del personaje.",
+    "soundscape": "Paisaje Sonoro",
+    "dialogue": "Detalles de Diálogo",
+    "dialoguePlaceholder": "Ej: Un personaje susurra, 'He estado esperando...'",
+    "sfx": "Efectos de Sonido Específicos (SFX)",
+    "sfxPlaceholder": "Ej: Lluvia crepitante, sirenas lejanas, el crujido de un letrero de neón.",
+    "music": "Música Ambiental y Pistas",
+    "musicPlaceholder": "Ej: Una partitura de sintetizador baja y tensa aumenta; la música se corta en el impacto."
+  },
+  "cameraEffects": {
+    "title": "🎥 Efectos de Cámara para Toda la Escena",
+    "description": "Establece comportamientos de cámara predeterminados para todas las tomas. Estos pueden ser anulados en los parámetros de cada toma.",
+    "cameraAnimation": "Animación de Cámara"
+  },
+  "generatedPrompt": {
+    "title": "✨ Prompt Generado",
+    "versionNotesLabel": "Notas de Versión (Registro de cambios opcional)",
+    "versionNotesPlaceholder": "Ej: v2: Cambiado el lente a 85mm, añadida lluvia.",
+    "saveDisabledTooltip": "Genera un nuevo prompt para guardar",
+    "saveTooltip": "Guardar en Galería"
+  },
+  "gallery": {
+    "title": "🖼️ Galería de Escenas",
+    "empty": {
+      "title": "📭 Tu Galería está Vacía",
+      "subtitle": "Genera y guarda escenas para verlas aquí."
+    },
+    "visibility": {
+      "public": "Público",
+      "private": "Privado"
+    },
+    "visibilityTooltip": {
+      "makePrivate": "Hacer privado",
+      "makePublic": "Hacer público"
+    },
+    "versionNotes": "NOTAS DE VERSIÓN:",
+    "sceneIdea": "Idea de Escena:",
+    "shots": "Tomas:",
+    "format": "Formato:",
+    "cameoConsent": "Consentimiento de Cameo:",
+    "acknowledged": "Confirmado",
+    "remixScene": "Remezclar Última Versión",
+    "deleteScene": "Eliminar Escena",
+    "history": "Ver Historial de Versiones",
+    "versionHistoryTitle": "📜 Historial de Versiones",
+    "remixThisVersion": "🔄 Remezclar esta Versión",
+    "versionCreatedOn": "Creado:",
+    "versionNotesLabel": "Notas:",
+    "latest": "(Última)"
+  },
+  "promptOptions": {
+    "labels": {
+        "shotType": "Tipo de Plano", "cameraAngle": "Ángulo de Cámara", "cameraMovement": "Movimiento de Cámara", "lens": "Lente", "composition": "Composición", "lighting": "Iluminación", "style": "Estilo", "filmQuality": "Calidad de Película", "pacing": "Ritmo", "timeOfDay": "Momento del Día", "location": "Ubicación", "depthOfField": "Profundidad de Campo", "texture": "Textura", "colorPalette": "Paleta de Colores", "genre": "Género"
+    },
+    "aspectRatio": {
+        "widescreen": "16:9 (Panorámico)", "vertical": "9:16 (Vertical)", "square": "1:1 (Cuadrado)", "classic": "4:3 (TV Clásico)", "cinemascope": "2.39:1 (Cinemascope)"
+    },
+    "genre": {
+        "drama": "Drama", "action": "Acción", "comedy": "Comedia", "sciFi": "Ciencia Ficción", "horror": "Terror", "fantasy": "Fantasía", "documentary": "Documental", "thriller": "Suspense"
+    },
+    "shotType": {
+        "extremeCloseUp": "Primerísimo Primer Plano", "closeUp": "Primer Plano", "mediumShot": "Plano Medio", "longShot": "Plano Largo", "establishingShot": "Plano de Establecimiento", "pov": "Punto de Vista (PDV)"
+    },
+    "cameraAngle": {
+        "eyeLevel": "A Nivel del Ojo", "highAngle": "Ángulo Picado", "lowAngle": "Ángulo Contrapicado", "dutchAngle": "Ángulo Holandés", "birdsEyeView": "Vista de Pájaro"
+    },
+    "cameraMovement": {
+        "none": "Estático", "pan": "Panorámica", "tilt": "Inclinación (Tilt)", "dollyZoom": "Dolly Zoom", "craneShot": "Plano de Grúa", "handheld": "Cámara en Mano / Inestable", "droneShot": "Plano de Dron", "gimbal": "Gimbal / Steadicam"
+    },
+    "lens": {
+        "24": "24mm (Gran Angular)", "35": "35mm (Estándar)", "50": "50mm (Natural)", "85": "85mm (Retrato)", "135": "135mm (Teleobjetivo)"
+    },
+    "composition": {
+        "ruleOfThirds": "Regla de los Tercios", "leadingLines": "Líneas de Guía", "centered": "Centrado", "symmetry": "Simetría", "frameWithinFrame": "Marco Dentro de Marco"
+    },
+    "lighting": {
+        "cinematic": "Iluminación Cinematográfica", "goldenHour": "Hora Dorada", "blueHour": "Hora Azul", "highKey": "Clave Alta", "lowKey": "Clave Baja / Claroscuro", "neon": "Iluminación de Neón", "backlight": "Contraluz", "studio": "Iluminación de Estudio"
+    },
+    "style": {
+        "photorealistic": "Fotorrealista", "cinematicFilm": "Película Cinematográfica", "denisVilleneuve": "Cinematografía como Denis Villeneuve", "wesAnderson": "Estilo de Wes Anderson", "quentinTarantino": "Estilo de Quentin Tarantino", "anime": "Anime", "documentary": "Documental", "foundFootage": "Metraje Encontrado", "threeDRender": "Render 3D", "macroPhotography": "Macrofotografía", "fantasyArt": "Arte Fantástico", "vaporwave": "Vaporwave"
+    },
+    "filmQuality": {
+        "fourK": "4K Nítido", "eightK": "8K Hiperdetallado", "thirtyFiveMM": "Grano de Película 35mm", "sixteenMM": "Grano de Película 16mm", "vhs": "Aspecto VHS", "imax": "Calidad IMAX"
+    },
+    "pacing": {
+        "normal": "Velocidad Normal", "slowMotion": "Cámara Lenta", "fastMotion": "Cámara Rápida", "timeLapse": "Time-lapse"
+    },
+    "timeOfDay": {
+        "daytime": "Día", "nighttime": "Noche", "dawn": "Amanecer", "dusk": "Atardecer", "midnight": "Medianoche"
+    },
+    "location": {
+        "unspecified": "Sin especificar", "cityscape": "Paisaje Urbano", "forest": "Bosque", "ocean": "Océano", "mountains": "Montañas", "desert": "Desierto", "sciFiInterior": "Interior de Ciencia Ficción"
+    },
+    "depthOfField": {
+        "natural": "Natural", "shallow": "Poca Profundidad (Bokeh)", "deep": "Profunda / Todo Enfocado", "rackFocus": "Efecto de Foco Selectivo"
+    },
+    "texture": {
+        "standard": "Definición Estándar", "smooth": "Liso / Brillante", "rough": "Áspero / Mate", "heavyGrain": "Grano de Película Grueso", "sharp": "Nítido y Limpio"
+    },
+    "colorPalette": {
+        "vibrant": "Vibrante y Saturado", "muted": "Apagado y Desaturado", "monochromatic": "Monocromático / B&N", "pastel": "Colores Pastel", "neon": "Neón / Synthwave", "warm": "Tonos Cálidos", "cool": "Tonos Fríos"
+    },
+    "cameraMovementOptions": {
+        "none": "Estático", "pan": "Panorámica", "tilt": "Inclinación", "dolly": "Dolly", "zoom": "Zoom", "dollyZoom": "Dolly Zoom (Vértigo)", "craneShot": "Plano de Grúa", "handheld": "Cámara en Mano", "droneShot": "Plano de Dron", "gimbal": "Gimbal / Steadicam", "slow": "Lento", "normal": "Normal", "fast": "Rápido", "left": "Izquierda", "right": "Derecha", "up": "Arriba", "down": "Abajo", "in": "Adentro", "out": "Afuera"
+    }
+  }
+}
