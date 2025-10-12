@@ -1,7 +1,22 @@
-
 {
   "header": {
-    "title": "Sora Prompt Architect"
+    "titleMain": "Sora",
+    "titleSubtitle": "Prompt Architect"
+  },
+  "hero": {
+    "title": {
+      "1": "Create the Next",
+      "2": "Blockbuster",
+      "3": "Scene"
+    },
+    "subtitle": "An AI-powered application to create, refine, and manage detailed prompts for text-to-video models like Sora. Describe your vision, select cinematic parameters, and let the AI craft the perfect prompt.",
+    "cta": "Start Building Your Prompt"
+  },
+  "app": {
+    "outputPlaceholder": {
+      "title": "Your Prompt Awaits",
+      "subtitle": "Fill out the form and click 'Generate' to see the AI-crafted prompt appear here."
+    }
   },
   "buttons": {
     "getSuggestions": "✨ Get AI Suggestions",
@@ -97,6 +112,7 @@
   },
   "gallery": {
     "title": "🖼️ Scene Gallery",
+    "subtitle": "Review, remix, and manage your saved creations.",
     "empty": {
       "title": "📭 Your Gallery is Empty",
       "subtitle": "Generate and save scenes to see them here."
@@ -129,6 +145,7 @@
         "shotType": "Shot Type",
         "cameraAngle": "Camera Angle",
         "cameraMovement": "Camera Movement",
+        "cameraAnimation": "Camera Animation",
         "lens": "Lens",
         "composition": "Composition",
         "lighting": "Lighting",
@@ -196,6 +213,18 @@
     },
     "cameraMovementOptions": {
         "none": "Static", "pan": "Pan", "tilt": "Tilt", "dolly": "Dolly", "zoom": "Zoom", "dollyZoom": "Dolly Zoom (Vertigo)", "craneShot": "Crane Shot", "handheld": "Handheld / Shaky Cam", "droneShot": "Drone Shot", "gimbal": "Gimbal / Steadicam", "slow": "Slow", "normal": "Normal", "fast": "Fast/Quick", "left": "Left", "right": "Right", "up": "Up", "down": "Down", "in": "In", "out": "Out"
+    },
+    "cameraAnimationOptions": {
+      "none": "None",
+      "slowPanLeft": "Slow Pan Left",
+      "slowPanRight": "Slow Pan Right",
+      "slowTiltUp": "Slow Tilt Up",
+      "slowTiltDown": "Slow Tilt Down",
+      "rapidZoomIn": "Rapid Zoom In",
+      "rapidZoomOut": "Rapid Zoom Out",
+      "handheldShake": "Handheld Shake",
+      "smoothDollyIn": "Smooth Dolly In",
+      "smoothDollyOut": "Smooth Dolly Out"
     }
   }
 }

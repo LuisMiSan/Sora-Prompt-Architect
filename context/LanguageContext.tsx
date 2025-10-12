@@ -78,8 +78,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   if (!translations) {
     return (
-      <div className="min-h-screen bg-brand-primary flex items-center justify-center">
-        <p className="text-brand-text text-lg animate-pulse">Loading Application...</p>
+      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
+        <p className="text-brand-text-primary text-lg animate-pulse">Loading Application...</p>
       </div>
     );
   }

@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { Shot, PromptParameters } from '../types';
 import { SceneData } from "../App";
@@ -9,13 +10,16 @@ function formatSceneForPrompt(data: SceneData): string {
   let formattedString = `SCENE DESCRIPTION: ${data.sceneDescription}\n`;
   formattedString += `ASPECT RATIO: ${data.aspectRatio}\n\n`;
 
-  if (data.cameraEffects && (data.cameraEffects.cameraMovement !== 'none' || data.cameraEffects.depthOfField !== 'natural')) {
+  if (data.cameraEffects && (data.cameraEffects.cameraMovement !== 'none' || data.cameraEffects.depthOfField !== 'natural' || (data.cameraEffects.cameraAnimation && data.cameraEffects.cameraAnimation !== 'none'))) {
     formattedString += `SCENE-WIDE CAMERA EFFECTS (Defaults for all shots unless specified otherwise):\n`;
     if (data.cameraEffects.cameraMovement !== 'none') {
         formattedString += `  - Camera Movement: ${data.cameraEffects.cameraMovement.replace(/-/g, ' ')}\n`;
     }
     if (data.cameraEffects.depthOfField !== 'natural') {
         formattedString += `  - Depth of Field: ${data.cameraEffects.depthOfField.replace(/-/g, ' ')}\n`;
+    }
+    if (data.cameraEffects.cameraAnimation && data.cameraEffects.cameraAnimation !== 'none') {
+        formattedString += `  - Camera Animation: ${data.cameraEffects.cameraAnimation.replace(/-/g, ' ')}\n`;
     }
     formattedString += `\n`;
   }
@@ -129,7 +133,9 @@ export const getSuggestions = async (data: SceneData, language: string): Promise
 
 
 const parameterProperties = Object.keys(PROMPT_OPTIONS).reduce((acc, key) => {
-  acc[key as keyof PromptParameters] = { type: Type.STRING, description: `The ${key} for the shot.` };
+  if (key !== 'cameraAnimation') { // Exclude cameraAnimation from per-shot parameters
+    acc[key as keyof PromptParameters] = { type: Type.STRING, description: `The ${key} for the shot.` };
+  }
   return acc;
 }, {} as Record<keyof PromptParameters, { type: Type; description: string }>);
 
@@ -189,6 +195,7 @@ const deconstructionSchema = {
             properties: {
                 depthOfField: { type: Type.STRING, description: "The overall depth of field for the scene (e.g., 'shallow', 'deep')." },
                 cameraMovement: { type: Type.STRING, description: "A default camera movement for the whole scene (e.g., 'handheld', 'slow-pan-left')." },
+                cameraAnimation: { type: Type.STRING, description: "A default camera animation for the whole scene (e.g., 'slow-pan-left', 'handheld-shake')." },
             },
         },
         aspectRatio: {

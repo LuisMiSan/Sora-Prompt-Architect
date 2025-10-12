@@ -39,6 +39,7 @@ export interface AudioData {
 export interface CameraEffectsData {
   depthOfField: string;
   cameraMovement: string;
+  cameraAnimation: string;
 }
 
 export interface PromptData {

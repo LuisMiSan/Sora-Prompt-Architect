@@ -7,7 +7,7 @@
     <title>Sora Prompt Architect</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -17,20 +17,17 @@
               sans: ['Inter', 'sans-serif'],
             },
             colors: {
-              'brand-primary': '#0D0E12', // Deep background
-              'brand-surface': '#1A1B23', // Main panel background
-              'brand-secondary': '#2C2D3A', // Deprecated, but kept for compatibility
-              
-              'brand-accent': '#8A6CFF', // Brighter Purple
-              'brand-accent-bright': '#A07FFF',
-              'brand-accent-hover': '#7A5DE8',
-              'brand-glow': 'rgba(138, 108, 255, 0.25)',
+              'brand-bg': '#F9FAFB', // Near White (Gray 50)
+              'brand-surface': '#FFFFFF', // White
+              'brand-border': '#E5E7EB', // Gray 200
+              'brand-accent-from': '#60A5FA', // Blue 400
+              'brand-accent-to': '#8B5CF6', // Violet 500
+              'brand-accent-hover': '#7C3AED', // Violet 600
 
-              'brand-text': '#F0F0F0', // Brighter primary text
-              'brand-subtle': '#A0A0B0', // Softer subtle text
+              'brand-text-primary': '#1F2937', // Dark Gray (Gray 800)
+              'brand-text-secondary': '#6B7280', // Medium Gray (Gray 500)
               
-              'brand-ui-bg': '#313242', // UI elements like inputs
-              'brand-ui-border': '#41424F',
+              'brand-ui-bg': '#F3F4F6', // UI Light Gray (Gray 100)
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -43,11 +40,9 @@
               },
             },
             boxShadow: {
-              'glow': '0 0 15px 0 var(--tw-shadow-color, #8A6CFF)',
+              'glow': '0 0 25px 0px rgba(139, 92, 246, 0.2)',
+              'glow-lg': '0 0 35px 5px rgba(139, 92, 246, 0.15)',
             },
-             backgroundImage: {
-              'radial-gradient': 'radial-gradient(circle at top, #1e1f29, #0D0E12 60%)',
-            }
           }
         }
       }
@@ -63,7 +58,7 @@
 }
 </script>
 </head>
-  <body class="bg-brand-primary text-brand-text font-sans bg-radial-gradient">
+  <body class="bg-brand-bg text-brand-text-primary font-sans">
     <div id="root"></div>
   </body>
 </html>

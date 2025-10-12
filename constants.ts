@@ -62,6 +62,18 @@ export const PROMPT_OPTIONS = {
     { value: 'drone-shot', labelKey: 'cameraMovement.droneShot' },
     { value: 'gimbal', labelKey: 'cameraMovement.gimbal' },
   ],
+  cameraAnimation: [
+    { value: 'none', labelKey: 'cameraAnimationOptions.none' },
+    { value: 'slow-pan-left', labelKey: 'cameraAnimationOptions.slowPanLeft' },
+    { value: 'slow-pan-right', labelKey: 'cameraAnimationOptions.slowPanRight' },
+    { value: 'slow-tilt-up', labelKey: 'cameraAnimationOptions.slowTiltUp' },
+    { value: 'slow-tilt-down', labelKey: 'cameraAnimationOptions.slowTiltDown' },
+    { value: 'rapid-zoom-in', labelKey: 'cameraAnimationOptions.rapidZoomIn' },
+    { value: 'rapid-zoom-out', labelKey: 'cameraAnimationOptions.rapidZoomOut' },
+    { value: 'handheld-shake', labelKey: 'cameraAnimationOptions.handheldShake' },
+    { value: 'smooth-dolly-in', labelKey: 'cameraAnimationOptions.smoothDollyIn' },
+    { value: 'smooth-dolly-out', labelKey: 'cameraAnimationOptions.smoothDollyOut' },
+  ],
    lens: [
     { value: '24mm', labelKey: 'lens.24' },
     { value: '35mm', labelKey: 'lens.35' },

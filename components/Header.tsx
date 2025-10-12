@@ -6,11 +6,11 @@ const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex items-center gap-1 bg-brand-primary/50 p-1 rounded-lg border border-brand-ui-border/50">
+    <div className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg border border-brand-border">
       <button
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 text-sm font-semibold rounded-md transition-all ${
-          language === 'en' ? 'bg-brand-accent text-white shadow-md shadow-brand-glow' : 'text-brand-subtle hover:bg-brand-surface'
+          language === 'en' ? 'bg-brand-accent-to text-white' : 'text-brand-text-secondary hover:bg-brand-surface'
         }`}
         aria-pressed={language === 'en'}
       >
@@ -19,7 +19,7 @@ const LanguageSwitcher: React.FC = () => {
       <button
         onClick={() => setLanguage('es')}
         className={`px-3 py-1 text-sm font-semibold rounded-md transition-all ${
-          language === 'es' ? 'bg-brand-accent text-white shadow-md shadow-brand-glow' : 'text-brand-subtle hover:bg-brand-surface'
+          language === 'es' ? 'bg-brand-accent-to text-white' : 'text-brand-text-secondary hover:bg-brand-surface'
         }`}
         aria-pressed={language === 'es'}
       >
@@ -33,17 +33,19 @@ const LanguageSwitcher: React.FC = () => {
 const Header: React.FC = () => {
   const { t } = useLanguage();
   return (
-    <header className="bg-brand-surface/70 backdrop-blur-lg border-b border-brand-ui-border/50 sticky top-0 z-20">
+    <header className="bg-brand-surface/80 backdrop-blur-lg border-b border-brand-border sticky top-0 z-20">
       <div className="container mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-brand-accent to-brand-accent-bright border border-brand-ui-border/50 rounded-lg flex items-center justify-center shadow-lg shadow-brand-glow">
-                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
-                  <path d="M7 6C7 4.89543 7.89543 4 9 4H17C18.1046 4 19 4.89543 19 6V18C19 19.1046 18.1046 20 17 20H9C7.89543 20 7 19.1046 7 18V6Z" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M10 12L14 9V15L10 12Z" fill="currentColor"/>
+            <div className="w-12 h-12 bg-gradient-to-br from-brand-accent-from to-brand-accent-to border-2 border-white/50 shadow-md rounded-xl flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-white">
+                    <path d="M21.821 5.239c-.31-.387-.78-.62-1.285-.62h-2.39L15.86 2.14c-.218-.363-.615-.59-1.045-.59H4c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6.512c0-.52-.25-1.01-.679-1.273zM5 19V6h10v13H5zm14-1V8.223l-2-1.333V19h-2V6.89l-2-1.334V4h1.86l2.285 2.539H19z"/>
+                    <path d="m11.14 3.55-4.28 4.28 1.414 1.414 4.28-4.28z"/>
+                    <path d="m13.26 1.43-4.28 4.28 1.414 1.414 4.28-4.28z"/>
                 </svg>
             </div>
-            <h1 className="text-xl md:text-2xl font-bold text-white tracking-wide">
-              {t('header.title')}
+            <h1 className="text-2xl md:text-3xl font-extrabold text-brand-text-primary tracking-tight">
+              <span className="bg-gradient-to-r from-brand-accent-from to-brand-accent-to bg-clip-text text-transparent">{t('header.titleMain')}</span>
+              <span className="ml-2 font-medium text-brand-text-secondary">{t('header.titleSubtitle')}</span>
             </h1>
         </div>
         <LanguageSwitcher />

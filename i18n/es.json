@@ -1,7 +1,22 @@
-
 {
   "header": {
-    "title": "Arquitecto de Prompts de Sora"
+    "titleMain": "Sora",
+    "titleSubtitle": "Prompt Architect"
+  },
+  "hero": {
+    "title": {
+      "1": "Crea",
+      "2": "Escenas",
+      "3": "Taquilleras"
+    },
+    "subtitle": "Una aplicación impulsada por IA para crear, refinar y gestionar prompts detallados para modelos de texto a video como Sora. Describe tu visión, selecciona parámetros cinemáticos y deja que la IA elabore el prompt perfecto.",
+    "cta": "Comienza a Construir tu Prompt"
+  },
+  "app": {
+    "outputPlaceholder": {
+      "title": "Tu Prompt te Espera",
+      "subtitle": "Completa el formulario y haz clic en 'Generar' para ver el prompt creado por la IA aparecer aquí."
+    }
   },
   "buttons": {
     "getSuggestions": "✨ Obtener Sugerencias de IA",
@@ -97,6 +112,7 @@
   },
   "gallery": {
     "title": "🖼️ Galería de Escenas",
+    "subtitle": "Revisa, remezcla y gestiona tus creaciones guardadas.",
     "empty": {
       "title": "📭 Tu Galería está Vacía",
       "subtitle": "Genera y guarda escenas para verlas aquí."
@@ -126,7 +142,7 @@
   },
   "promptOptions": {
     "labels": {
-        "shotType": "Tipo de Plano", "cameraAngle": "Ángulo de Cámara", "cameraMovement": "Movimiento de Cámara", "lens": "Lente", "composition": "Composición", "lighting": "Iluminación", "style": "Estilo", "filmQuality": "Calidad de Película", "pacing": "Ritmo", "timeOfDay": "Momento del Día", "location": "Ubicación", "depthOfField": "Profundidad de Campo", "texture": "Textura", "colorPalette": "Paleta de Colores", "genre": "Género"
+        "shotType": "Tipo de Plano", "cameraAngle": "Ángulo de Cámara", "cameraMovement": "Movimiento de Cámara", "cameraAnimation": "Animación de Cámara", "lens": "Lente", "composition": "Composición", "lighting": "Iluminación", "style": "Estilo", "filmQuality": "Calidad de Película", "pacing": "Ritmo", "timeOfDay": "Momento del Día", "location": "Ubicación", "depthOfField": "Profundidad de Campo", "texture": "Textura", "colorPalette": "Paleta de Colores", "genre": "Género"
     },
     "aspectRatio": {
         "widescreen": "16:9 (Panorámico)", "vertical": "9:16 (Vertical)", "square": "1:1 (Cuadrado)", "classic": "4:3 (TV Clásico)", "cinemascope": "2.39:1 (Cinemascope)"
@@ -178,6 +194,18 @@
     },
     "cameraMovementOptions": {
         "none": "Estático", "pan": "Panorámica", "tilt": "Inclinación", "dolly": "Dolly", "zoom": "Zoom", "dollyZoom": "Dolly Zoom (Vértigo)", "craneShot": "Plano de Grúa", "handheld": "Cámara en Mano", "droneShot": "Plano de Dron", "gimbal": "Gimbal / Steadicam", "slow": "Lento", "normal": "Normal", "fast": "Rápido", "left": "Izquierda", "right": "Derecha", "up": "Arriba", "down": "Abajo", "in": "Adentro", "out": "Afuera"
+    },
+    "cameraAnimationOptions": {
+      "none": "Ninguno",
+      "slowPanLeft": "Panorámica Lenta Izquierda",
+      "slowPanRight": "Panorámica Lenta Derecha",
+      "slowTiltUp": "Inclinación Lenta Arriba",
+      "slowTiltDown": "Inclinación Lenta Abajo",
+      "rapidZoomIn": "Zoom Rápido Adentro",
+      "rapidZoomOut": "Zoom Rápido Afuera",
+      "handheldShake": "Temblor de Cámara en Mano",
+      "smoothDollyIn": "Dolly Suave Adentro",
+      "smoothDollyOut": "Dolly Suave Afuera"
     }
   }
 }

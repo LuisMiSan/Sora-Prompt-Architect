@@ -15,7 +15,7 @@ interface PromptFormProps {
   onDeconstruct: (data: SceneData) => void;
 }
 
-const inputBaseClasses = "w-full bg-brand-primary border border-brand-ui-border/80 rounded-lg p-2.5 focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/50 transition-all placeholder-brand-subtle/50 text-sm";
+const inputBaseClasses = "w-full bg-brand-ui-bg border border-brand-border rounded-lg p-2.5 focus:border-brand-accent-to focus:ring-2 focus:ring-brand-accent-to/50 transition-all placeholder-brand-text-secondary/50 text-sm text-brand-text-primary";
 const textAreaBaseClasses = `${inputBaseClasses} resize-y`;
 
 // --- SUB-COMPONENTS ---
@@ -50,23 +50,23 @@ const ImportPromptModal: React.FC<{
 
     return (
         <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
             onClick={onClose}
             aria-modal="true"
             role="dialog"
         >
             <div 
-                className="bg-brand-surface w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col border border-brand-ui-border/50 shadow-black/40"
+                className="bg-brand-surface w-full max-w-2xl rounded-2xl shadow-xl flex flex-col border border-brand-border"
                 onClick={e => e.stopPropagation()}
             >
-                <div className="flex justify-between items-center p-5 border-b border-brand-ui-border/50">
-                    <h3 className="text-xl font-bold text-white">{t('promptForm.import.modalTitle')}</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white" aria-label="Close">
+                <div className="flex justify-between items-center p-5 border-b border-brand-border">
+                    <h3 className="text-xl font-bold text-brand-text-primary">{t('promptForm.import.modalTitle')}</h3>
+                    <button onClick={onClose} className="text-brand-text-secondary hover:text-brand-text-primary" aria-label="Close">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
                 <div className="p-6 space-y-4">
-                    <p className="text-brand-subtle text-sm">{t('promptForm.import.modalSubtitle')}</p>
+                    <p className="text-brand-text-secondary text-sm">{t('promptForm.import.modalSubtitle')}</p>
                     <textarea
                         value={promptText}
                         onChange={(e) => setPromptText(e.target.value)}
@@ -77,15 +77,15 @@ const ImportPromptModal: React.FC<{
                     />
                     {error && <p className="text-red-400 text-sm">{error}</p>}
                 </div>
-                 <div className="flex justify-end gap-3 p-4 bg-brand-primary/50 border-t border-brand-ui-border/50 rounded-b-2xl">
-                    <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-brand-ui-bg hover:bg-brand-ui-border border border-brand-ui-border rounded-lg transition-colors">
+                 <div className="flex justify-end gap-3 p-4 bg-slate-50 border-t border-brand-border rounded-b-2xl">
+                    <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold">
                         {t('promptForm.import.cancel')}
                     </button>
                     <button 
                         onClick={handleDeconstruct} 
                         type="button" 
                         disabled={isDeconstructing || !promptText.trim()}
-                        className="px-5 py-2 text-sm bg-gradient-to-r from-brand-accent to-brand-accent-bright hover:shadow-glow hover:shadow-brand-glow text-white font-semibold rounded-lg transition-all duration-300 disabled:from-gray-500 disabled:to-gray-600 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="px-5 py-2 text-sm bg-gradient-to-r from-brand-accent-from to-brand-accent-to hover:shadow-glow text-white font-semibold rounded-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         {isDeconstructing ? (
                             <>
@@ -122,6 +122,7 @@ const initialAudio: AudioData = {
 const initialCameraEffects: CameraEffectsData = {
   depthOfField: 'natural',
   cameraMovement: 'none',
+  cameraAnimation: 'none',
 };
 
 const parameterGroups: Record<string, (keyof PromptParameters)[]> = {
@@ -154,22 +155,22 @@ const ShotEditor: React.FC<{
   };
 
   return (
-    <div className="bg-brand-primary/50 border border-brand-ui-border/50 rounded-2xl p-4 space-y-4">
+    <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
       <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-        <h4 className="font-bold text-lg text-white">
+        <h4 className="font-bold text-lg text-brand-text-primary">
           {t('shotEditor.title', { index: index + 1 })}
-          {shot.description && <span className="text-sm font-normal text-brand-subtle ml-2 italic hidden md:inline"> - {shot.description.substring(0, 30)}...</span>}
+          {shot.description && <span className="text-sm font-normal text-brand-text-secondary ml-2 italic hidden md:inline"> - {shot.description.substring(0, 30)}...</span>}
         </h4>
         <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); onDelete(shot.id); }}
-              className="p-1.5 text-brand-subtle hover:text-red-400 rounded-lg hover:bg-red-500/10 transition-colors"
+              className="p-1.5 text-brand-text-secondary hover:text-red-500 rounded-lg hover:bg-red-500/10 transition-colors"
               title={t('shotEditor.delete')}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
-            <span className={`transition-transform transform ${isOpen ? 'rotate-180' : ''}`}>
+            <span className={`transition-transform transform text-brand-text-secondary ${isOpen ? 'rotate-180' : ''}`}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
             </span>
         </div>
@@ -192,8 +193,8 @@ const ShotEditor: React.FC<{
             onChange={handleInputChange}
             className={inputBaseClasses}
             />
-          <div className="bg-brand-primary/50 rounded-lg border border-brand-ui-border/50">
-            <div className="flex border-b border-brand-ui-border/50 px-2 overflow-x-auto">
+          <div className="bg-white rounded-lg border border-brand-border">
+            <div className="flex border-b border-brand-border px-2 overflow-x-auto">
               {Object.keys(parameterGroups).map(groupName => (
                 <button
                   key={groupName}
@@ -201,12 +202,12 @@ const ShotEditor: React.FC<{
                   onClick={() => setActiveTab(groupName)}
                   className={`px-4 py-2 text-sm font-semibold transition-all whitespace-nowrap relative ${
                     activeTab === groupName
-                      ? 'text-white'
-                      : 'text-brand-subtle hover:text-white'
+                      ? 'text-brand-text-primary'
+                      : 'text-brand-text-secondary hover:text-brand-text-primary'
                   }`}
                 >
                   {t(`shotEditor.tabs.${groupName}`)}
-                  {activeTab === groupName && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-accent to-brand-accent-bright rounded-full"></span>}
+                  {activeTab === groupName && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-accent-from to-brand-accent-to rounded-full"></span>}
                 </button>
               ))}
             </div>
@@ -216,7 +217,7 @@ const ShotEditor: React.FC<{
                   if (!options) return null;
                   return (
                     <div key={key}>
-                      <label htmlFor={`${key}-${shot.id}`} className="block text-xs font-medium text-brand-subtle mb-1.5 capitalize">
+                      <label htmlFor={`${key}-${shot.id}`} className="block text-xs font-medium text-brand-text-secondary mb-1.5 capitalize">
                         {t(`promptOptions.labels.${key}`)}
                       </label>
                       <select
@@ -247,15 +248,15 @@ const AdvancedPanel: React.FC<{
 }> = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-     <div className="bg-brand-primary/50 border border-brand-ui-border/50 rounded-2xl">
+     <div className="bg-slate-50 border border-brand-border rounded-2xl">
       <button
         type="button"
         className="w-full flex justify-between items-center p-4 text-left"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
-        <h3 className="font-bold text-lg text-white">{title}</h3>
-        <span className={`transition-transform transform ${isOpen ? 'rotate-180' : ''}`}>
+        <h3 className="font-bold text-lg text-brand-text-primary">{title}</h3>
+        <span className={`transition-transform transform text-brand-text-secondary ${isOpen ? 'rotate-180' : ''}`}>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
         </span>
       </button>
@@ -302,7 +303,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       setCameos(initialData.cameos);
       setAudio(initialData.audio || initialAudio);
       setPhysics(initialData.physics || initialPhysics);
-      setCameraEffects(initialData.cameraEffects || initialCameraEffects);
+      setCameraEffects({ ...initialCameraEffects, ...initialData.cameraEffects });
       setAspectRatio(initialData.aspectRatio || '16:9');
       setCameoConsent(initialData.cameoConsent || false);
     }
@@ -375,24 +376,24 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     <form onSubmit={handleSubmit} className="space-y-8">
        <div className="flex justify-between items-start gap-4">
         <div>
-            <h2 className="text-3xl font-bold text-white">{t('promptForm.title')}</h2>
-            <p className="text-brand-subtle text-sm mt-1">{t('promptForm.subtitle')}</p>
+            <h2 className="text-3xl font-bold text-brand-text-primary">{t('promptForm.title')}</h2>
+            <p className="text-brand-text-secondary text-sm mt-1">{t('promptForm.subtitle')}</p>
         </div>
         <div className="flex-shrink-0 flex items-center gap-2">
             <button
                 type="button"
                 onClick={() => setIsImportModalOpen(true)}
-                className="px-3 py-2 text-sm bg-brand-surface hover:bg-brand-ui-bg border border-brand-ui-border rounded-lg transition-colors flex items-center gap-2"
+                className="px-3 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors flex items-center gap-2 text-brand-text-primary font-semibold"
                 title={t('promptForm.import.tooltip')}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011 1v2.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L8 6.586V4a1 1 0 011-1z" /><path d="M10 12a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" /></svg>
-                {t('promptForm.import.button')}
+                <span className="hidden sm:inline">{t('promptForm.import.button')}</span>
             </button>
             {isEditing && (
                 <button
                 type="button"
                 onClick={handleReset}
-                className="px-3 py-2 text-sm bg-brand-primary hover:bg-brand-surface border border-brand-ui-border rounded-lg transition-colors"
+                className="px-3 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold"
                 >
                 {t('promptForm.startNew')}
                 </button>
@@ -400,34 +401,53 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         </div>
       </div>
        {isRemixing && (
-        <div className="bg-brand-accent/10 border border-brand-accent/50 p-3 rounded-lg text-sm text-brand-text shadow-inner shadow-brand-glow/50">
+        <div className="bg-brand-accent-to/10 border border-brand-accent-to/20 p-3 rounded-lg text-sm text-brand-accent-to/80 shadow-inner">
           {t('promptForm.remixingMessage')}
         </div>
       )}
       {isImported && (
-        <div className="bg-blue-900/20 border border-blue-500/50 p-3 rounded-lg text-sm text-blue-200">
+        <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg text-sm text-blue-700">
           {t('promptForm.importedMessage')}
         </div>
       )}
       
-      <div>
-        <label htmlFor="sceneDescription" className="block text-sm font-medium text-brand-subtle mb-2">
-          {t('promptForm.sceneDescriptionLabel')}
-        </label>
-        <textarea
-          id="sceneDescription"
-          name="sceneDescription"
-          rows={4}
-          className={textAreaBaseClasses}
-          placeholder={t('promptForm.sceneDescriptionPlaceholder')}
-          value={sceneDescription}
-          onChange={(e) => setSceneDescription(e.target.value)}
-          required
-        />
+      <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
+        <div>
+            <label htmlFor="sceneDescription" className="block text-sm font-medium text-brand-text-secondary mb-2">
+            {t('promptForm.sceneDescriptionLabel')}
+            </label>
+            <textarea
+            id="sceneDescription"
+            name="sceneDescription"
+            rows={4}
+            className={textAreaBaseClasses}
+            placeholder={t('promptForm.sceneDescriptionPlaceholder')}
+            value={sceneDescription}
+            onChange={(e) => setSceneDescription(e.target.value)}
+            required
+            />
+        </div>
+        <div>
+            <label htmlFor="aspectRatio" className="block text-sm font-medium text-brand-text-secondary mb-2">
+            {t('promptForm.aspectRatioLabel')}
+            </label>
+            <select
+            id="aspectRatio"
+            name="aspectRatio"
+            value={aspectRatio}
+            onChange={(e) => setAspectRatio(e.target.value)}
+            className={inputBaseClasses}
+            >
+            {ASPECT_RATIO_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+            ))}
+            </select>
+        </div>
       </div>
 
-       <div className="bg-brand-primary/50 border border-brand-ui-border/50 rounded-2xl p-4 space-y-3">
-            <label htmlFor="cameos" className="block text-sm font-medium text-brand-subtle">
+
+       <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3">
+            <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
               {t('promptForm.cameosLabel')}
             </label>
             <input
@@ -444,14 +464,14 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                     id="cameoConsent"
                     checked={cameoConsent}
                     onChange={(e) => setCameoConsent(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-brand-ui-border bg-brand-ui-bg text-brand-accent focus:ring-brand-accent disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="mt-1 h-4 w-4 rounded border-brand-border bg-brand-ui-bg text-brand-accent-to focus:ring-brand-accent-to disabled:opacity-60 disabled:cursor-not-allowed"
                     disabled={!cameos.trim()}
                 />
                 <div>
-                    <label htmlFor="cameoConsent" className={`font-medium transition-colors ${cameos.trim() ? 'text-brand-text' : 'text-gray-500'}`}>
+                    <label htmlFor="cameoConsent" className={`font-medium transition-colors ${cameos.trim() ? 'text-brand-text-primary' : 'text-gray-400'}`}>
                         {t('promptForm.cameoConsentLabel')}
                     </label>
-                    <p className={`text-xs transition-colors ${cameos.trim() ? 'text-brand-subtle' : 'text-gray-500'}`}>{t('promptForm.cameoConsentDescription')}</p>
+                    <p className={`text-xs transition-colors ${cameos.trim() ? 'text-brand-text-secondary' : 'text-gray-400'}`}>{t('promptForm.cameoConsentDescription')}</p>
                 </div>
             </div>
        </div>
@@ -459,57 +479,92 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       <AdvancedPanel title={t('advancedSettings.title')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-brand-subtle border-b border-brand-ui-border pb-2">{t('advancedSettings.physicsEngine')}</h4>
+            <h4 className="text-sm font-semibold text-brand-text-secondary border-b border-brand-border pb-2">{t('advancedSettings.physicsEngine')}</h4>
             <div>
-              <label htmlFor="weightAndRigidity" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.weightAndRigidity')}</label>
+              <label htmlFor="weightAndRigidity" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.weightAndRigidity')}</label>
               <textarea id="weightAndRigidity" value={physics.weightAndRigidity} onChange={(e) => setPhysics(prev => ({...prev, weightAndRigidity: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.weightAndRigidityPlaceholder')} />
             </div>
             <div>
-              <label htmlFor="materialInteractions" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.materialInteractions')}</label>
+              <label htmlFor="materialInteractions" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.materialInteractions')}</label>
               <textarea id="materialInteractions" value={physics.materialInteractions} onChange={(e) => setPhysics(prev => ({...prev, materialInteractions: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.materialInteractionsPlaceholder')} />
             </div>
             <div>
-              <label htmlFor="environmentalForces" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.environmentalForces')}</label>
+              <label htmlFor="environmentalForces" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.environmentalForces')}</label>
               <textarea id="environmentalForces" value={physics.environmentalForces} onChange={(e) => setPhysics(prev => ({...prev, environmentalForces: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.environmentalForcesPlaceholder')} />
             </div>
           </div>
           <div className="space-y-4">
-             <h4 className="text-sm font-semibold text-brand-subtle border-b border-brand-ui-border pb-2">{t('advancedSettings.soundscape')}</h4>
+             <h4 className="text-sm font-semibold text-brand-text-secondary border-b border-brand-border pb-2">{t('advancedSettings.soundscape')}</h4>
              <div>
-              <label htmlFor="dialogue" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.dialogue')}</label>
+              <label htmlFor="dialogue" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.dialogue')}</label>
               <textarea id="dialogue" value={audio.dialogue} onChange={(e) => setAudio(prev => ({...prev, dialogue: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.dialoguePlaceholder')} />
             </div>
             <div>
-              <label htmlFor="soundEffects" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.sfx')}</label>
+              <label htmlFor="soundEffects" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.sfx')}</label>
               <textarea id="soundEffects" value={audio.soundEffects} onChange={(e) => setAudio(prev => ({...prev, soundEffects: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.sfxPlaceholder')} />
             </div>
             <div>
-              <label htmlFor="music" className="block text-xs font-medium text-brand-subtle mb-1.5">{t('advancedSettings.music')}</label>
+              <label htmlFor="music" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.music')}</label>
               <textarea id="music" value={audio.music} onChange={(e) => setAudio(prev => ({...prev, music: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.musicPlaceholder')} />
             </div>
           </div>
         </div>
       </AdvancedPanel>
 
-      <div>
-        <label htmlFor="aspectRatio" className="block text-sm font-medium text-brand-subtle mb-2">
-          {t('promptForm.aspectRatioLabel')}
-        </label>
-        <select
-          id="aspectRatio"
-          name="aspectRatio"
-          value={aspectRatio}
-          onChange={(e) => setAspectRatio(e.target.value)}
-          className={inputBaseClasses}
-        >
-          {ASPECT_RATIO_OPTIONS.map(option => (
-            <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
-          ))}
-        </select>
-      </div>
+      <AdvancedPanel title={t('cameraEffects.title')}>
+        <p className="text-sm text-brand-text-secondary -mt-2 mb-6">{t('cameraEffects.description')}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+                <label htmlFor="sceneDepthOfField" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.depthOfField')}
+                </label>
+                <select
+                    id="sceneDepthOfField"
+                    value={cameraEffects.depthOfField}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, depthOfField: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.depthOfField.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="sceneCameraMovement" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.cameraMovement')}
+                </label>
+                <select
+                    id="sceneCameraMovement"
+                    value={cameraEffects.cameraMovement}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, cameraMovement: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.cameraMovement.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+             <div>
+                <label htmlFor="sceneCameraAnimation" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.cameraAnimation')}
+                </label>
+                <select
+                    id="sceneCameraAnimation"
+                    value={cameraEffects.cameraAnimation || 'none'}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, cameraAnimation: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.cameraAnimation.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
+      </AdvancedPanel>
+
 
       <div className="space-y-4">
-        <h3 className="text-xl font-bold text-white">Shot List</h3>
+        <h3 className="text-xl font-bold text-brand-text-primary">Shot List</h3>
         {shots.map((shot, index) => (
           <ShotEditor key={shot.id} shot={shot} index={index} onUpdate={handleUpdateShot} onDelete={handleDeleteShot} />
         ))}
@@ -518,28 +573,28 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
        <button
           type="button"
           onClick={handleAddShot}
-          className="w-full flex items-center justify-center gap-2 text-center bg-brand-primary/20 hover:bg-brand-accent/10 border-2 border-dashed border-brand-ui-border/80 hover:border-brand-accent text-brand-subtle hover:text-brand-accent font-semibold py-3 px-4 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors"
         >
           {t('promptForm.addShot')}
         </button>
 
        {(suggestions || isSuggesting || suggestionError) && (
-        <div className="bg-brand-primary/50 border border-brand-ui-border/50 rounded-2xl p-4 space-y-3 animate-fade-in">
+        <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3 animate-fade-in">
           <div className="flex justify-between items-center">
-            <h4 className="font-bold text-lg text-white">{t('promptForm.suggestions.title')}</h4>
-            <button type="button" onClick={() => { setSuggestions(null); setSuggestionError(null); }} className="text-gray-400 hover:text-white">&times;</button>
+            <h4 className="font-bold text-lg text-brand-text-primary">{t('promptForm.suggestions.title')}</h4>
+            <button type="button" onClick={() => { setSuggestions(null); setSuggestionError(null); }} className="text-gray-500 hover:text-brand-text-primary">&times;</button>
           </div>
-          {isSuggesting && <p className="text-brand-subtle animate-pulse-fast">{t('promptForm.suggestions.loading')}</p>}
-          {suggestionError && <p className="text-red-400">{suggestionError}</p>}
+          {isSuggesting && <p className="text-brand-text-secondary animate-pulse-fast">{t('promptForm.suggestions.loading')}</p>}
+          {suggestionError && <p className="text-red-500">{suggestionError}</p>}
           {suggestions && (
             <div>
-              <ul className="list-disc list-inside text-brand-text space-y-1">
+              <ul className="list-disc list-inside text-brand-text-primary space-y-1">
                 {suggestions.split('\n- ').map((s, i) => s.trim() && <li key={i}>{s.replace(/^-/, '').trim()}</li>)}
               </ul>
               <button
                 type="button"
                 onClick={handleApplySuggestions}
-                className="w-full mt-4 flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full mt-4 flex items-center justify-center gap-2 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-800 font-semibold py-2 px-4 rounded-lg transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6a1 1 0 10-2 0v5.586L7.707 10.293zM3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
@@ -556,7 +611,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
           type="button"
           onClick={handleGetSuggestions}
           disabled={isLoading || isSuggesting}
-          className="w-full flex items-center justify-center gap-2 bg-brand-surface border border-brand-accent text-brand-accent hover:bg-brand-accent/10 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 bg-white border border-brand-border text-brand-text-primary hover:bg-slate-100 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
            {isSuggesting ? (
              <>
@@ -568,7 +623,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         <button
           type="submit"
           disabled={isLoading || !sceneDescription.trim() || (!!cameos.trim() && !cameoConsent)}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-accent to-brand-accent-bright hover:shadow-glow hover:shadow-brand-glow text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:from-gray-500 disabled:to-gray-600 disabled:shadow-none disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-accent-from to-brand-accent-to hover:shadow-glow text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:shadow-none disabled:cursor-not-allowed"
           title={!!cameos.trim() && !cameoConsent ? t('promptForm.error.cameoConsentNeeded') : ""}
         >
           {isLoading ? (
@@ -585,9 +640,9 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         </button>
       </div>
       
-       <div className="mt-6 border-t border-brand-ui-border/50 pt-6">
-            <h4 className="font-semibold text-brand-subtle text-sm">{t('promptForm.guidelines.title')}</h4>
-            <ul className="list-disc list-inside text-xs text-gray-500 mt-2 space-y-1">
+       <div className="mt-6 border-t border-brand-border pt-6">
+            <h4 className="font-semibold text-brand-text-secondary text-sm">{t('promptForm.guidelines.title')}</h4>
+            <ul className="list-disc list-inside text-xs text-gray-400 mt-2 space-y-1">
                 <li>{t('promptForm.guidelines.one')}</li>
                 <li>{t('promptForm.guidelines.two')}</li>
                 <li>{t('promptForm.guidelines.three')}</li>
