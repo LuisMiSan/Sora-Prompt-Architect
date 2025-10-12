@@ -26,7 +26,9 @@
     "generating": "Generando...",
     "copied": "¡Copiado!",
     "copy": "📋 Copiar Prompt",
-    "save": "💾 Guardar en Galería"
+    "save": "💾 Guardar en Galería",
+    "startRecording": "Empezar a Grabar",
+    "stopRecording": "Detener Grabación"
   },
   "promptForm": {
     "title": "🎬 Panel de Composición",

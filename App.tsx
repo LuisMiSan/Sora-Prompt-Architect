@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion } from './types';
 import { generatePrompt } from './services/geminiService';
@@ -18,7 +19,7 @@ const App: React.FC = () => {
   const [promptToRemix, setPromptToRemix] = useState<SceneData | null>(null);
   const [lastGeneratedData, setLastGeneratedData] = useState<SceneData | null>(null);
   const [remixSourceId, setRemixSourceId] = useState<string | null>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     try {
@@ -37,7 +38,7 @@ const App: React.FC = () => {
     setError(null);
     setGeneratedPrompt('');
     try {
-      const prompt = await generatePrompt(data);
+      const prompt = await generatePrompt(data, language);
       setGeneratedPrompt(prompt);
       setLastGeneratedData(data); // Save the data used for generation
     } catch (e) {
@@ -46,7 +47,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [language]);
 
   const handleSavePrompt = useCallback((versionNotes: string) => {
     if (!generatedPrompt || !lastGeneratedData) return;
@@ -131,6 +132,10 @@ const App: React.FC = () => {
     setRemixSourceId(null);
   }, []);
 
+  const handleScrollToArchitect = () => {
+    document.getElementById('architect-tool')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-brand-bg font-sans">
       <Header />
@@ -145,9 +150,11 @@ const App: React.FC = () => {
                 {t('hero.subtitle')}
             </p>
             <div className="mt-8">
-                <a href="#architect-tool" className="px-8 py-3 text-lg bg-gradient-to-r from-brand-accent-from to-brand-accent-to text-white font-bold rounded-lg transition-all duration-300 hover:shadow-glow-lg">
+                <button 
+                  onClick={handleScrollToArchitect} 
+                  className="px-8 py-3 text-lg bg-gradient-to-r from-brand-accent-from to-brand-accent-to text-white font-bold rounded-lg transition-all duration-300 hover:shadow-glow-lg">
                     {t('hero.cta')}
-                </a>
+                </button>
             </div>
         </section>
 

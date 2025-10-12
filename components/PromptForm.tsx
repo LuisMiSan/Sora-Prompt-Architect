@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData } from '../types';
 import { PROMPT_OPTIONS, initialParameters, ASPECT_RATIO_OPTIONS } from '../constants';
 import { SceneData } from '../App';
@@ -288,6 +289,64 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [suggestionError, setSuggestionError] = useState<string | null>(null);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  
+  // Speech Recognition State
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupport, setSpeechSupport] = useState(false);
+  const recognitionRef = useRef<any>(null); // Using 'any' for SpeechRecognition to support webkitSpeechRecognition
+
+
+  useEffect(() => {
+    // Fix: Cast window to `any` to access non-standard `SpeechRecognition` and `webkitSpeechRecognition` properties without TypeScript errors.
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      setSpeechSupport(true);
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = language === 'es' ? 'es-ES' : 'en-US';
+
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognition.onerror = (event: any) => {
+        console.error("Speech recognition error", event.error);
+        setIsListening(false);
+      };
+      
+      recognition.onresult = (event: any) => {
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          }
+        }
+        if (finalTranscript) {
+          setSceneDescription(prev => (prev.trim() ? `${prev.trim()} ${finalTranscript.trim()}` : finalTranscript.trim()).trim());
+        }
+      };
+      
+      recognitionRef.current = recognition;
+    } else {
+      setSpeechSupport(false);
+      console.warn("Speech recognition not supported in this browser.");
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [language]);
+
+  const handleToggleListening = () => {
+    if (!recognitionRef.current) return;
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      recognitionRef.current.start();
+    }
+  };
+
 
   const handleApplySuggestions = () => {
     if (!suggestions) return;
@@ -416,16 +475,35 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
             <label htmlFor="sceneDescription" className="block text-sm font-medium text-brand-text-secondary mb-2">
             {t('promptForm.sceneDescriptionLabel')}
             </label>
-            <textarea
-            id="sceneDescription"
-            name="sceneDescription"
-            rows={4}
-            className={textAreaBaseClasses}
-            placeholder={t('promptForm.sceneDescriptionPlaceholder')}
-            value={sceneDescription}
-            onChange={(e) => setSceneDescription(e.target.value)}
-            required
-            />
+            <div className="relative">
+              <textarea
+                id="sceneDescription"
+                name="sceneDescription"
+                rows={4}
+                className={`${textAreaBaseClasses} pr-12`}
+                placeholder={t('promptForm.sceneDescriptionPlaceholder')}
+                value={sceneDescription}
+                onChange={(e) => setSceneDescription(e.target.value)}
+                required
+              />
+              {speechSupport && (
+                 <button
+                    type="button"
+                    onClick={handleToggleListening}
+                    className={`absolute bottom-2.5 right-2.5 p-2 rounded-full transition-all duration-200 ${
+                        isListening 
+                        ? 'bg-red-500 text-white animate-pulse-fast' 
+                        : 'bg-brand-ui-bg hover:bg-slate-200 text-brand-text-secondary'
+                    }`}
+                    title={isListening ? t('buttons.stopRecording') : t('buttons.startRecording')}
+                  >
+                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                     <path d="M7 4a3 3 0 016 0v6a3 3 0 11-6 0V4z" />
+                     <path d="M5.5 8.5a.5.5 0 01.5.5v1a4 4 0 004 4h0a4 4 0 004-4v-1a.5.5 0 011 0v1a5 5 0 01-4.5 4.975V17h3a.5.5 0 010 1h-7a.5.5 0 010-1h3v-1.525A5 5 0 015.5 9.5v-1a.5.5 0 01.5-.5z" />
+                   </svg>
+                 </button>
+              )}
+            </div>
         </div>
         <div>
             <label htmlFor="aspectRatio" className="block text-sm font-medium text-brand-text-secondary mb-2">

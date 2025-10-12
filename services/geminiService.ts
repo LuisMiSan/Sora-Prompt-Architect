@@ -1,4 +1,5 @@
 
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { Shot, PromptParameters } from '../types';
 import { SceneData } from "../App";
@@ -75,11 +76,17 @@ function formatSceneForPrompt(data: SceneData): string {
   return formattedString;
 }
 
-export const generatePrompt = async (data: SceneData): Promise<string> => {
+export const generatePrompt = async (data: SceneData, language: string): Promise<string> => {
   const model = 'gemini-2.5-flash';
   const formattedScene = formatSceneForPrompt(data);
 
-  const systemInstruction = `You are an expert director of photography and prompt engineer for advanced text-to-video AI models like Sora. Your task is to interpret a structured "shooting script" containing a scene description, characters, sound design, physics, consent information, and a detailed shot list with specific constraints and genres. Synthesize all this information into a single, cohesive, and vivid paragraph. The final prompt should be rich with descriptive detail, capturing the mood, atmosphere, physical interactions, and cinematic qualities specified. Do not add any preamble, explanation, or markdown formatting; just return the final, camera-ready prompt itself.`;
+  const languageMap: { [key: string]: string } = {
+    en: 'English',
+    es: 'Spanish',
+  };
+  const responseLanguage = languageMap[language] || 'English';
+
+  const systemInstruction = `You are an expert director of photography and prompt engineer for advanced text-to-video AI models like Sora. Your task is to interpret a structured "shooting script" containing a scene description, characters, sound design, physics, consent information, and a detailed shot list with specific constraints and genres. Synthesize all this information into a single, cohesive, and vivid paragraph. The final prompt should be rich with descriptive detail, capturing the mood, atmosphere, physical interactions, and cinematic qualities specified. Do not add any preamble, explanation, or markdown formatting; just return the final, camera-ready prompt itself. Your final response MUST be in ${responseLanguage}.`;
 
   const userPrompt = formattedScene;
   
