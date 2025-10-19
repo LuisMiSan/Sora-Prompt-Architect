@@ -135,12 +135,10 @@ const parameterGroups: Record<string, (keyof PromptParameters)[]> = {
 
 const ShotEditor: React.FC<{
   shot: Shot;
-  index: number;
   onUpdate: (id: string, updatedShot: Partial<Shot>) => void;
-  onDelete: (id: string) => void;
-}> = ({ shot, index, onUpdate, onDelete }) => {
+  isModal?: boolean; // Added to adjust styles if needed
+}> = ({ shot, onUpdate, isModal = false }) => {
   const { t } = useLanguage();
-  const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState(Object.keys(parameterGroups)[0]);
 
   const handleParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -156,7 +154,82 @@ const ShotEditor: React.FC<{
   };
 
   return (
-    <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
+    <div className="space-y-4 pt-2">
+      <textarea
+        name="description"
+        placeholder={t('shotEditor.descriptionPlaceholder')}
+        value={shot.description}
+        onChange={handleInputChange}
+        rows={3}
+        className={textAreaBaseClasses}
+      />
+      <input
+        type="text"
+        name="constraints"
+        placeholder={t('shotEditor.constraintsPlaceholder')}
+        value={shot.constraints}
+        onChange={handleInputChange}
+        className={inputBaseClasses}
+      />
+      <div className="bg-white rounded-lg border border-brand-border">
+        <div className="flex border-b border-brand-border px-2 overflow-x-auto">
+          {Object.keys(parameterGroups).map(groupName => (
+            <button
+              key={groupName}
+              type="button"
+              onClick={() => setActiveTab(groupName)}
+              className={`px-4 py-2 text-sm font-semibold transition-all whitespace-nowrap relative ${
+                activeTab === groupName
+                  ? 'text-brand-text-primary'
+                  : 'text-brand-text-secondary hover:text-brand-text-primary'
+              }`}
+            >
+              {t(`shotEditor.tabs.${groupName}`)}
+              {activeTab === groupName && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-accent-from to-brand-accent-to rounded-full"></span>}
+            </button>
+          ))}
+        </div>
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {parameterGroups[activeTab as keyof typeof parameterGroups].map(key => {
+            const options = PROMPT_OPTIONS[key as keyof typeof PROMPT_OPTIONS];
+            if (!options) return null;
+            return (
+              <div key={key}>
+                <label htmlFor={`${key}-${shot.id}`} className="block text-xs font-medium text-brand-text-secondary mb-1.5 capitalize">
+                  {t(`promptOptions.labels.${key}`)}
+                </label>
+                <select
+                  id={`${key}-${shot.id}`}
+                  name={key}
+                  value={shot.parameters[key as keyof PromptParameters]}
+                  onChange={handleParameterChange}
+                  className={inputBaseClasses}
+                >
+                  {options.map(option => (
+                    <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                  ))}
+                </select>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const ShotEditorPanel: React.FC<{
+  shot: Shot;
+  index: number;
+  onUpdate: (id: string, updatedShot: Partial<Shot>) => void;
+  onDelete: (id: string) => void;
+}> = ({ shot, index, onUpdate, onDelete }) => {
+  const { t } = useLanguage();
+  const [isOpen, setIsOpen] = useState(true);
+  
+  return (
+    <div className="bg-slate-50 border border-brand-border rounded-2xl p-4">
       <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <h4 className="font-bold text-lg text-brand-text-primary">
           {t('shotEditor.title', { index: index + 1 })}
@@ -176,72 +249,11 @@ const ShotEditor: React.FC<{
             </span>
         </div>
       </div>
-      {isOpen && (
-        <div className="animate-fade-in space-y-4 pt-2">
-          <textarea
-            name="description"
-            placeholder={t('shotEditor.descriptionPlaceholder')}
-            value={shot.description}
-            onChange={handleInputChange}
-            rows={2}
-            className={textAreaBaseClasses}
-          />
-          <input
-            type="text"
-            name="constraints"
-            placeholder={t('shotEditor.constraintsPlaceholder')}
-            value={shot.constraints}
-            onChange={handleInputChange}
-            className={inputBaseClasses}
-            />
-          <div className="bg-white rounded-lg border border-brand-border">
-            <div className="flex border-b border-brand-border px-2 overflow-x-auto">
-              {Object.keys(parameterGroups).map(groupName => (
-                <button
-                  key={groupName}
-                  type="button"
-                  onClick={() => setActiveTab(groupName)}
-                  className={`px-4 py-2 text-sm font-semibold transition-all whitespace-nowrap relative ${
-                    activeTab === groupName
-                      ? 'text-brand-text-primary'
-                      : 'text-brand-text-secondary hover:text-brand-text-primary'
-                  }`}
-                >
-                  {t(`shotEditor.tabs.${groupName}`)}
-                  {activeTab === groupName && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-accent-from to-brand-accent-to rounded-full"></span>}
-                </button>
-              ))}
-            </div>
-            <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {parameterGroups[activeTab as keyof typeof parameterGroups].map(key => {
-                  const options = PROMPT_OPTIONS[key as keyof typeof PROMPT_OPTIONS];
-                  if (!options) return null;
-                  return (
-                    <div key={key}>
-                      <label htmlFor={`${key}-${shot.id}`} className="block text-xs font-medium text-brand-text-secondary mb-1.5 capitalize">
-                        {t(`promptOptions.labels.${key}`)}
-                      </label>
-                      <select
-                        id={`${key}-${shot.id}`}
-                        name={key}
-                        value={shot.parameters[key as keyof PromptParameters]}
-                        onChange={handleParameterChange}
-                        className={inputBaseClasses}
-                      >
-                        {options.map(option => (
-                          <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
-                        ))}
-                      </select>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-      )}
+      {isOpen && <div className="animate-fade-in"><ShotEditor shot={shot} onUpdate={onUpdate} /></div>}
     </div>
   );
 };
+
 
 const AdvancedPanel: React.FC<{
   title: string;
@@ -270,6 +282,35 @@ const AdvancedPanel: React.FC<{
   );
 };
 
+const ShotEditorModal: React.FC<{
+  shot: Shot;
+  onClose: () => void;
+  onUpdate: (id: string, updatedShot: Partial<Shot>) => void;
+  index: number;
+}> = ({ shot, onClose, onUpdate, index }) => {
+    const { t } = useLanguage();
+    return (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
+            <div className="bg-brand-surface w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-xl flex flex-col border border-brand-border" onClick={e => e.stopPropagation()}>
+                <div className="flex justify-between items-center p-5 border-b border-brand-border">
+                    <h3 className="text-xl font-bold text-brand-text-primary">{t('shotEditor.modalTitle', { index: index + 1 })}</h3>
+                    <button onClick={onClose} className="text-brand-text-secondary hover:text-brand-text-primary" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <div className="overflow-y-auto p-6">
+                    <ShotEditor shot={shot} onUpdate={onUpdate} isModal />
+                </div>
+                 <div className="flex justify-end p-4 bg-slate-50 border-t border-brand-border rounded-b-2xl">
+                    <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-gradient-to-r from-brand-accent-from to-brand-accent-to hover:shadow-glow text-white font-semibold rounded-lg transition-all duration-300">
+                        {t('shotEditor.closeButton')}
+                    </button>
+                 </div>
+            </div>
+        </div>
+    );
+};
+
 
 // --- MAIN FORM COMPONENT ---
 
@@ -289,6 +330,10 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [suggestionError, setSuggestionError] = useState<string | null>(null);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
+  const [shotListView, setShotListView] = useState<'list' | 'storyboard'>('list');
+  const [editingShot, setEditingShot] = useState<Shot | null>(null);
+  const [editingShotIndex, setEditingShotIndex] = useState(0);
   
   // Speech Recognition State
   const [isListening, setIsListening] = useState(false);
@@ -388,12 +433,20 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   
   const handleUpdateShot = (id: string, updatedShot: Partial<Shot>) => {
     setShots(shots.map(s => s.id === id ? { ...s, ...updatedShot } : s));
+    if (editingShot && editingShot.id === id) {
+      setEditingShot({ ...editingShot, ...updatedShot });
+    }
   };
   
   const handleDeleteShot = (id: string) => {
     if (shots.length > 1) {
       setShots(shots.filter(s => s.id !== id));
     }
+  };
+
+  const handleEditShot = (shot: Shot, index: number) => {
+      setEditingShot(shot);
+      setEditingShotIndex(index);
   };
   
   const handleGetSuggestions = async () => {
@@ -425,6 +478,46 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const isRemixing = isEditing && !!remixSourceId;
   const isImported = isEditing && !remixSourceId;
 
+  const StoryboardCard: React.FC<{ shot: Shot; index: number; onEdit: () => void; onDelete: (id: string) => void }> = ({ shot, index, onEdit, onDelete }) => {
+    const keyParams = useMemo(() => {
+      return Object.entries(shot.parameters)
+        .filter(([key, value]) => value && value !== initialParameters[key as keyof PromptParameters])
+        .slice(0, 3) // Show max 3 key parameters
+        .map(([key, value]) => t(`promptOptions.labels.${key as keyof PromptParameters}`) + ': ' + t(`promptOptions.${PROMPT_OPTIONS[key as keyof typeof PROMPT_OPTIONS].find(o => o.value === value)?.labelKey || ''}`));
+    }, [shot.parameters, t]);
+
+    return (
+        <div className="flex-shrink-0 w-80 bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+            <div>
+                <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-bold text-md text-brand-text-primary">{t('shotEditor.title', { index: index + 1 })}</h4>
+                    <button type="button" onClick={() => onDelete(shot.id)} className="p-1.5 text-brand-text-secondary hover:text-red-500 rounded-lg hover:bg-red-500/10" title={t('shotEditor.delete')}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" /></svg>
+                    </button>
+                </div>
+                <p className="text-sm text-brand-text-secondary line-clamp-3 h-16">{shot.description || t('shotEditor.noDescription')}</p>
+                <div className="mt-2 space-y-1">
+                  {keyParams.map((param, i) => (
+                    <span key={i} className="inline-block bg-white border border-brand-border text-brand-text-secondary text-xs font-medium mr-2 mb-1 px-2.5 py-0.5 rounded-full">{param}</span>
+                  ))}
+                </div>
+            </div>
+            <button type="button" onClick={onEdit} className="w-full mt-3 bg-white hover:bg-slate-100 border border-brand-border font-semibold text-brand-text-primary py-2 rounded-lg transition-colors">
+                {t('shotEditor.editButton')}
+            </button>
+        </div>
+    );
+  };
+    
+  const AddShotCard: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+    <div className="flex-shrink-0 w-80 flex items-center justify-center">
+        <button type="button" onClick={onClick} className="w-full h-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors">
+            {t('promptForm.addShot')}
+        </button>
+    </div>
+  );
+
+
   return (
     <>
     <ImportPromptModal 
@@ -432,6 +525,14 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         onClose={() => setIsImportModalOpen(false)}
         onDeconstruct={onDeconstruct}
     />
+    {editingShot && (
+        <ShotEditorModal
+            shot={editingShot}
+            index={editingShotIndex}
+            onClose={() => setEditingShot(null)}
+            onUpdate={handleUpdateShot}
+        />
+    )}
     <form onSubmit={handleSubmit} className="space-y-8">
        <div className="flex justify-between items-start gap-4">
         <div>
@@ -641,20 +742,51 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       </AdvancedPanel>
 
 
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold text-brand-text-primary">Shot List</h3>
-        {shots.map((shot, index) => (
-          <ShotEditor key={shot.id} shot={shot} index={index} onUpdate={handleUpdateShot} onDelete={handleDeleteShot} />
-        ))}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-brand-text-primary">{t('shotEditor.shotListTitle')}</h3>
+          <div className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg border border-brand-border">
+            <button type="button" onClick={() => setShotListView('list')} className={`px-2 py-1 rounded-md transition-all ${shotListView === 'list' ? 'bg-brand-accent-to text-white' : 'hover:bg-brand-surface'}`} title={t('shotEditor.listView')}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
+            </button>
+            <button type="button" onClick={() => setShotListView('storyboard')} className={`px-2 py-1 rounded-md transition-all ${shotListView === 'storyboard' ? 'bg-brand-accent-to text-white' : 'hover:bg-brand-surface'}`} title={t('shotEditor.storyboardView')}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg>
+            </button>
+          </div>
+        </div>
+        
+        {shotListView === 'list' ? (
+            <div className="space-y-4">
+                {shots.map((shot, index) => (
+                    <ShotEditorPanel key={shot.id} shot={shot} index={index} onUpdate={handleUpdateShot} onDelete={handleDeleteShot} />
+                ))}
+            </div>
+        ) : (
+             <div className="flex overflow-x-auto gap-4 pb-4 -m-2 p-2">
+                {shots.map((shot, index) => (
+                    <StoryboardCard
+                        key={shot.id}
+                        shot={shot}
+                        index={index}
+                        onEdit={() => handleEditShot(shot, index)}
+                        onDelete={handleDeleteShot}
+                    />
+                ))}
+                <AddShotCard onClick={handleAddShot} />
+            </div>
+        )}
       </div>
       
-       <button
-          type="button"
-          onClick={handleAddShot}
-          className="w-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors"
-        >
-          {t('promptForm.addShot')}
+       {shotListView === 'list' && (
+        <button
+            type="button"
+            onClick={handleAddShot}
+            className="w-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors"
+            >
+            {t('promptForm.addShot')}
         </button>
+       )}
+
 
        {(suggestions || isSuggesting || suggestionError) && (
         <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3 animate-fade-in">

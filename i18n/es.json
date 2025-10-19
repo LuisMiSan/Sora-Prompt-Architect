@@ -74,9 +74,16 @@
   },
   "shotEditor": {
     "title": "🎬 Toma #{{index}}",
+    "shotListTitle": "Lista de Tomas",
+    "listView": "Vista de Lista",
+    "storyboardView": "Vista de Storyboard",
     "delete": "Eliminar Toma",
     "descriptionPlaceholder": "Acción, detalles, interacciones físicas (ej: salpicaduras de agua, impacto de objeto pesado)...",
     "constraintsPlaceholder": "Restricciones / Prompt negativo (ej: sin gente, evitar cortes rápidos, solo luz natural)...",
+    "noDescription": "Sin descripción.",
+    "editButton": "Editar Toma",
+    "modalTitle": "Editando Toma #{{index}}",
+    "closeButton": "Hecho",
     "tabs": {
       "camera": "📷 Cámara",
       "style": "🎨 Estilo",
@@ -171,7 +178,7 @@
         "cinematic": "Iluminación Cinematográfica", "goldenHour": "Hora Dorada", "blueHour": "Hora Azul", "highKey": "Clave Alta", "lowKey": "Clave Baja / Claroscuro", "neon": "Iluminación de Neón", "backlight": "Contraluz", "studio": "Iluminación de Estudio"
     },
     "style": {
-        "photorealistic": "Fotorrealista", "cinematicFilm": "Película Cinematográfica", "denisVilleneuve": "Cinematografía como Denis Villeneuve", "wesAnderson": "Estilo de Wes Anderson", "quentinTarantino": "Estilo de Quentin Tarantino", "anime": "Anime", "documentary": "Documental", "foundFootage": "Metraje Encontrado", "threeDRender": "Render 3D", "macroPhotography": "Macrofotografía", "fantasyArt": "Arte Fantástico", "vaporwave": "Vaporwave"
+        "photorealistic": "Fotorrealista", "cinematicFilm": "Película Cinematográfica", "denisVilleneuve": "Cinematografía como Denis Villeneuve", "wesAnderson": "Estilo de Wes Anderson", "quentinTarantino": "Estilo de Quentin Tarantino", "anime": "Anime", "documentary": "Documental", "foundFootage": "Metraje Encontrado", "threeDRender": "Render 3D", "macroPhotography": "Macrofotografía", "arteFantastico": "Arte Fantástico", "vaporwave": "Vaporwave"
     },
     "filmQuality": {
         "fourK": "4K Nítido", "eightK": "8K Hiperdetallado", "thirtyFiveMM": "Grano de Película 35mm", "sixteenMM": "Grano de Película 16mm", "vhs": "Aspecto VHS", "imax": "Calidad IMAX"

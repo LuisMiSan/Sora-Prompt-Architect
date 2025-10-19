@@ -74,9 +74,16 @@
   },
   "shotEditor": {
     "title": "🎬 Shot #{{index}}",
+    "shotListTitle": "Shot List",
+    "listView": "List View",
+    "storyboardView": "Storyboard View",
     "delete": "Delete Shot",
     "descriptionPlaceholder": "Action, details, physical interactions (e.g., water splashing, heavy object impact)...",
     "constraintsPlaceholder": "Constraints / Negative prompt (e.g., no people, avoid fast cuts, natural lighting only)...",
+    "noDescription": "No description provided.",
+    "editButton": "Edit Shot",
+    "modalTitle": "Editing Shot #{{index}}",
+    "closeButton": "Done",
     "tabs": {
       "camera": "📷 Camera",
       "style": "🎨 Style",
