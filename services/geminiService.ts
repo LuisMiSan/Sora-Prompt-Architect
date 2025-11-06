@@ -25,7 +25,11 @@ function formatSceneForPrompt(data: SceneData): string {
   }
 
   if (data.cameos.trim()) {
-    formattedString += `CHARACTERS/CAMEOS: ${data.cameos}\n`;
+    formattedString += `CHARACTERS/CAMEOS: ${data.cameos}`;
+    if (data.cameoDescription.trim()) {
+      formattedString += ` (${data.cameoDescription.trim()})`;
+    }
+    formattedString += `\n`;
     formattedString += `CAMEO CONSENT: ${data.cameoConsent ? 'User has acknowledged consent requirements.' : 'Consent not specified.'}\n\n`;
   }
 
@@ -188,6 +192,10 @@ const deconstructionSchema = {
             type: Type.STRING,
             description: "A comma-separated list of any specific characters, actors, or personas mentioned.",
         },
+        cameoDescription: {
+            type: Type.STRING,
+            description: "A detailed description of the characters or cameos mentioned, including their appearance or role."
+        },
         audio: {
             type: Type.OBJECT,
             properties: {
@@ -241,7 +249,7 @@ Key Instructions:
 3.  **parameters**: For each shot, meticulously fill in the parameter fields. Infer values where possible (e.g., a "dark alley" implies 'low-key' lighting). For each parameter, you MUST choose the closest valid option from the lists provided below. Do not invent new values. If a parameter is not mentioned and cannot be inferred, use a sensible default (e.g., 'medium-shot', 'eye-level', 'none').
 4.  **audio & physics**: Extract any mention of sounds, music, dialogue, or physical interactions and place them in the appropriate fields.
 5.  **aspectRatio**: Infer if possible (e.g., "vertical video" -> "9:16"). If not specified, default to "16:9".
-6.  **cameos**: List any named characters or people.
+6.  **cameos & cameoDescription**: List any named characters or people in 'cameos', and describe their appearance or role in 'cameoDescription'.
 
 Here are the valid options for the parameters. YOU MUST USE THESE VALUES:
 ${validOptionsString}
@@ -266,6 +274,7 @@ ${validOptionsString}
         const validatedData: SceneData = {
             cameoConsent: !!parsedJson.cameos, // Assume consent if cameos are extracted
             ...parsedJson,
+            cameoDescription: parsedJson.cameoDescription || '',
             shots: parsedJson.shots?.map((shot: any) => ({
                 id: Date.now().toString() + Math.random(),
                 ...shot,

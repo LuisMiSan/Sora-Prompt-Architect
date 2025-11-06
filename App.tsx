@@ -109,6 +109,7 @@ const App: React.FC = () => {
       sceneDescription: version.sceneDescription,
       shots: version.shots,
       cameos: version.cameos,
+      cameoDescription: version.cameoDescription || '',
       audio: version.audio || { dialogue: '', soundEffects: '', music: '' },
       physics: version.physics || { weightAndRigidity: '', materialInteractions: '', environmentalForces: '' },
       cameraEffects: version.cameraEffects || { depthOfField: 'natural', cameraMovement: 'none', cameraAnimation: 'none' },

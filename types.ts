@@ -46,6 +46,7 @@ export interface PromptData {
   sceneDescription: string;
   shots: Shot[];
   cameos: string;
+  cameoDescription: string;
   audio: AudioData;
   physics: PhysicsData;
   cameraEffects?: CameraEffectsData;

@@ -319,6 +319,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [sceneDescription, setSceneDescription] = useState('');
   const [shots, setShots] = useState<Shot[]>([defaultShot()]);
   const [cameos, setCameos] = useState('');
+  const [cameoDescription, setCameoDescription] = useState('');
   const [cameoConsent, setCameoConsent] = useState(false);
   const [physics, setPhysics] = useState<PhysicsData>(initialPhysics);
   const [audio, setAudio] = useState<AudioData>(initialAudio);
@@ -405,6 +406,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       setSceneDescription(initialData.sceneDescription);
       setShots(initialData.shots.length > 0 ? initialData.shots : [defaultShot()]);
       setCameos(initialData.cameos);
+      setCameoDescription(initialData.cameoDescription || '');
       setAudio(initialData.audio || initialAudio);
       setPhysics(initialData.physics || initialPhysics);
       setCameraEffects({ ...initialCameraEffects, ...initialData.cameraEffects });
@@ -417,6 +419,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     setSceneDescription('');
     setShots([defaultShot()]);
     setCameos('');
+    setCameoDescription('');
     setCameoConsent(false);
     setAudio(initialAudio);
     setPhysics(initialPhysics);
@@ -458,7 +461,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     setSuggestions(null);
     setSuggestionError(null);
     try {
-        const result = await getSuggestions({ sceneDescription, shots, cameos, audio, physics, cameraEffects, aspectRatio, cameoConsent }, language);
+        const result = await getSuggestions({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent }, language);
         setSuggestions(result);
     } catch (e) {
         setSuggestionError(t('promptForm.error.suggestionsFailed'));
@@ -470,7 +473,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (sceneDescription.trim()) {
-      onGenerate({ sceneDescription, shots, cameos, audio, physics, cameraEffects, aspectRatio, cameoConsent });
+      onGenerate({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent });
     }
   };
 
@@ -625,32 +628,52 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       </div>
 
 
-       <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3">
-            <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
-              {t('promptForm.cameosLabel')}
-            </label>
-            <input
-              type="text"
-              id="cameos"
-              value={cameos}
-              onChange={(e) => setCameos(e.target.value)}
-              className={inputBaseClasses}
-              placeholder={t('promptForm.cameosPlaceholder')}
-            />
-            <div className="flex items-start space-x-3 pt-2">
-                <input
-                    type="checkbox"
-                    id="cameoConsent"
-                    checked={cameoConsent}
-                    onChange={(e) => setCameoConsent(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-brand-border bg-brand-ui-bg text-brand-accent-to focus:ring-brand-accent-to disabled:opacity-60 disabled:cursor-not-allowed"
-                    disabled={!cameos.trim()}
-                />
+       <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
+            <div>
+              <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
+                {t('promptForm.cameosLabel')}
+              </label>
+              <input
+                type="text"
+                id="cameos"
+                value={cameos}
+                onChange={(e) => setCameos(e.target.value)}
+                className={inputBaseClasses}
+                placeholder={t('promptForm.cameosPlaceholder')}
+              />
+            </div>
+
+            <div className={`space-y-4 border-t border-brand-border pt-4 ${cameos.trim() ? 'animate-fade-in' : 'hidden'}`}>
+                <div className="flex items-start space-x-3">
+                    <input
+                        type="checkbox"
+                        id="cameoConsent"
+                        checked={cameoConsent}
+                        onChange={(e) => setCameoConsent(e.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-brand-border bg-brand-ui-bg text-brand-accent-to focus:ring-brand-accent-to"
+                    />
+                    <div>
+                        <label htmlFor="cameoConsent" className="font-medium text-brand-text-primary">
+                            {t('promptForm.cameoConsentLabel')}
+                        </label>
+                        <p className="text-xs text-brand-text-secondary">{t('promptForm.cameoConsentDescription')}</p>
+                    </div>
+                </div>
+
                 <div>
-                    <label htmlFor="cameoConsent" className={`font-medium transition-colors ${cameos.trim() ? 'text-brand-text-primary' : 'text-gray-400'}`}>
-                        {t('promptForm.cameoConsentLabel')}
+                    <label htmlFor="cameoDescription" className={`block text-sm font-medium mb-2 transition-colors ${cameoConsent ? 'text-brand-text-secondary' : 'text-gray-400'}`}>
+                        {t('promptForm.cameoDescriptionLabel')}
                     </label>
-                    <p className={`text-xs transition-colors ${cameos.trim() ? 'text-brand-text-secondary' : 'text-gray-400'}`}>{t('promptForm.cameoConsentDescription')}</p>
+                    <textarea
+                        id="cameoDescription"
+                        value={cameoDescription}
+                        onChange={(e) => setCameoDescription(e.target.value)}
+                        rows={2}
+                        className={`${textAreaBaseClasses} disabled:bg-slate-200/50 disabled:cursor-not-allowed`}
+                        placeholder={t('promptForm.cameoDescriptionPlaceholder')}
+                        disabled={!cameoConsent}
+                        title={!cameoConsent ? t('promptForm.cameoDescriptionDisabledTooltip') : ''}
+                    />
                 </div>
             </div>
        </div>
