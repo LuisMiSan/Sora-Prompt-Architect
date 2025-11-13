@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion } from './types';
 import { generatePrompt } from './services/geminiService';
@@ -10,6 +11,8 @@ import PromptGallery from './components/PromptGallery';
 import { useLanguage } from './context/LanguageContext';
 
 export interface SceneData extends PromptData {}
+
+const QUERY_HISTORY_KEY = 'sora-query-history';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,6 +44,26 @@ const App: React.FC = () => {
       const prompt = await generatePrompt(data, language);
       setGeneratedPrompt(prompt);
       setLastGeneratedData(data); // Save the data used for generation
+
+      // Save query to persistent history database
+      try {
+        const storedHistory = localStorage.getItem(QUERY_HISTORY_KEY);
+        const history = storedHistory ? JSON.parse(storedHistory) : [];
+        
+        const newQueryRecord = {
+          ...data, // All form data
+          timestamp: new Date().toISOString(),
+          generatedPrompt: prompt,
+          language: language,
+        };
+
+        const updatedHistory = [...history, newQueryRecord];
+        localStorage.setItem(QUERY_HISTORY_KEY, JSON.stringify(updatedHistory));
+      } catch (e) {
+        console.error("Failed to save query to history", e);
+        // Do not block the user flow if history saving fails
+      }
+
     } catch (e) {
       setError('Failed to generate prompt. Please check your API key and try again.');
       console.error(e);

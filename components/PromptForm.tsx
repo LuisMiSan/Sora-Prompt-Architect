@@ -341,6 +341,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [speechSupport, setSpeechSupport] = useState(false);
   const recognitionRef = useRef<any>(null); // Using 'any' for SpeechRecognition to support webkitSpeechRecognition
 
+  const needsCameoConsent = !!cameos.trim() && !cameoConsent;
 
   useEffect(() => {
     // Fix: Cast window to `any` to access non-standard `SpeechRecognition` and `webkitSpeechRecognition` properties without TypeScript errors.
@@ -630,9 +631,21 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
 
        <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
             <div>
-              <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
-                {t('promptForm.cameosLabel')}
-              </label>
+              <div className="flex items-center gap-2 mb-2">
+                <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
+                  {t('promptForm.cameosLabel')}
+                </label>
+                {needsCameoConsent && (
+                    <div className="relative group">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.21 3.03-1.742 3.03H4.42c-1.532 0-2.492-1.696-1.742-3.03l5.58-9.92zM10 13a1 1 0 110-2 1 1 0 010 2zm-1-4a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
+                        </svg>
+                        <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max max-w-xs bg-brand-text-primary text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                            {t('promptForm.error.cameoConsentNeeded')}
+                        </span>
+                    </div>
+                )}
+              </div>
               <input
                 type="text"
                 id="cameos"
@@ -644,7 +657,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
             </div>
 
             <div className={`space-y-4 border-t border-brand-border pt-4 ${cameos.trim() ? 'animate-fade-in' : 'hidden'}`}>
-                <div className="flex items-start space-x-3">
+                <div className={`flex items-start space-x-3 p-3 rounded-lg transition-all ${needsCameoConsent ? 'bg-amber-500/10 ring-1 ring-amber-500/30' : ''}`}>
                     <input
                         type="checkbox"
                         id="cameoConsent"
