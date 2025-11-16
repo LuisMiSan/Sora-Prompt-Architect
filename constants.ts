@@ -26,6 +26,8 @@ export const ASPECT_RATIO_OPTIONS = [
     { value: '2.39:1', labelKey: 'aspectRatio.cinemascope' },
 ];
 
+export const VEO_SUPPORTED_ASPECT_RATIOS = ['16:9', '9:16'];
+
 export const PROMPT_OPTIONS = {
   genre: [
     { value: 'drama', labelKey: 'genre.drama' },

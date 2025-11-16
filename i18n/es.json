@@ -27,6 +27,8 @@
     "copied": "¡Copiado!",
     "copy": "📋 Copiar Prompt",
     "save": "💾 Guardar en Galería",
+    "generateVideo": "🎬 Generar Vídeo",
+    "generatingVideo": "Generando Vídeo...",
     "startRecording": "Empezar a Grabar",
     "stopRecording": "Detener Grabación"
   },
@@ -47,6 +49,8 @@
     "cameoConsentDescription": "Debes tener permiso antes de usar nombres o imágenes de personas reales.",
     "aspectRatioLabel": "Formato / Relación de Aspecto",
     "addShot": "➕ Añadir Otra Toma",
+    "thinkingMode": "Modo de Pensamiento",
+    "thinkingModeTooltip": "Usa un modelo más avanzado (Gemini 2.5 Pro) para sugerencias más profundas y creativas. Puede tardar más.",
     "import": {
       "button": "Importar",
       "tooltip": "Importa un prompt existente para deconstruirlo y mejorarlo",
@@ -120,7 +124,25 @@
     "versionNotesLabel": "Notas de Versión (Registro de cambios opcional)",
     "versionNotesPlaceholder": "Ej: v2: Cambiado el lente a 85mm, añadida lluvia.",
     "saveDisabledTooltip": "Genera un nuevo prompt para guardar",
-    "saveTooltip": "Guardar en Galería"
+    "saveTooltip": "Guardar en Galería",
+    "videoUnsupportedAspect": "La generación de vídeo solo admite relaciones de aspecto 16:9 y 9:16."
+  },
+  "generatedVideo": {
+    "title": "🎬 Vídeo Generado",
+    "progress": {
+      "start": "Iniciando la generación del vídeo...",
+      "running": "Tu vídeo se está generando. Esto puede tardar unos minutos. Por favor, espera...",
+      "downloading": "Finalizando y descargando tu vídeo...",
+      "complete": "¡Generación de vídeo completada!"
+    },
+    "error": "Falló la Generación del Vídeo",
+    "errorKey": "Tu clave de API parece ser inválida. Por favor, selecciona una clave válida e inténtalo de nuevo."
+  },
+  "apiKeyModal": {
+    "title": "Se Requiere Clave de API para Generar Vídeo",
+    "body": "Para generar vídeos con el modelo Veo, necesitas seleccionar una de tus propias claves de API. Esto asegura que cualquier uso se asocie con tu cuenta.",
+    "linkText": "Por favor, consulta la documentación de facturación para más detalles.",
+    "button": "Seleccionar Clave de API"
   },
   "gallery": {
     "title": "🖼️ Galería de Escenas",

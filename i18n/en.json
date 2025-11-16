@@ -27,6 +27,8 @@
     "copied": "Copied!",
     "copy": "📋 Copy Prompt",
     "save": "💾 Save to Gallery",
+    "generateVideo": "🎬 Generate Video",
+    "generatingVideo": "Generating Video...",
     "startRecording": "Start Recording",
     "stopRecording": "Stop Recording"
   },
@@ -47,6 +49,8 @@
     "cameoConsentDescription": "You must have permission before using the names or likenesses of real individuals.",
     "aspectRatioLabel": "Format / Aspect Ratio",
     "addShot": "➕ Add Another Shot",
+    "thinkingMode": "Thinking Mode",
+    "thinkingModeTooltip": "Use a more advanced model (Gemini 2.5 Pro) for deeper, more creative suggestions. May take longer.",
     "import": {
       "button": "Import",
       "tooltip": "Import an existing prompt to deconstruct and improve it",
@@ -120,7 +124,25 @@
     "versionNotesLabel": "Version Notes (Optional Changelog)",
     "versionNotesPlaceholder": "e.g., v2: Changed lens to 85mm, added rain.",
     "saveDisabledTooltip": "Generate a new prompt to save",
-    "saveTooltip": "Save to Gallery"
+    "saveTooltip": "Save to Gallery",
+    "videoUnsupportedAspect": "Video generation only supports 16:9 and 9:16 aspect ratios."
+  },
+  "generatedVideo": {
+    "title": "🎬 Generated Video",
+    "progress": {
+      "start": "Initializing video generation...",
+      "running": "Your video is being generated. This can take a few minutes. Please wait...",
+      "downloading": "Finalizing and downloading your video...",
+      "complete": "Video generation complete!"
+    },
+    "error": "Video Generation Failed",
+    "errorKey": "Your API key seems to be invalid. Please select a valid key and try again."
+  },
+  "apiKeyModal": {
+    "title": "API Key Required for Video Generation",
+    "body": "To generate videos with the Veo model, you need to select one of your own API keys. This ensures that any usage is associated with your account.",
+    "linkText": "Please refer to the billing documentation for more details.",
+    "button": "Select API Key"
   },
   "gallery": {
     "title": "🖼️ Scene Gallery",

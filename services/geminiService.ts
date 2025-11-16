@@ -116,8 +116,7 @@ export const generatePrompt = async (data: SceneData, language: string): Promise
   }
 };
 
-export const getSuggestions = async (data: SceneData, language: string): Promise<string> => {
-  const model = 'gemini-2.5-flash';
+export const getSuggestions = async (data: SceneData, language: string, thinkingMode: boolean): Promise<string> => {
   const formattedScene = formatSceneForPrompt(data);
   
   const languageMap: { [key: string]: string } = {
@@ -127,21 +126,32 @@ export const getSuggestions = async (data: SceneData, language: string): Promise
   const responseLanguage = languageMap[language] || 'English';
 
   const systemInstructionEN = `You are a creative assistant and expert filmmaker. Your task is to analyze the provided "shooting script" and offer 3-5 concise, actionable suggestions for improvement. Your suggestions must be highly targeted and context-aware. Pay close attention to the selected parameters for each shot, such as genre, style, lighting, and camera movement. For example, if the genre is 'horror', suggest darker lighting, unsettling camera angles like a dutch-angle, or slow, creeping camera movements. If the style is 'style-of-wes-anderson', suggest symmetrical compositions or a specific pastel color palette. The goal is to provide specific advice that enhances the chosen aesthetic, not generic feedback. Focus on enhancing mood, visual interest, narrative clarity, or making better use of cinematic techniques that align with the user's intent. Frame your feedback as constructive advice. Present your suggestions as a simple, unnumbered, bulleted list using "-" for each point. Do not add any preamble or conclusion. Your response MUST be in ${responseLanguage}.`;
-
   const systemInstructionES = `Eres un asistente creativo y cineasta experto. Tu tarea es analizar el 'guion de rodaje' proporcionado y ofrecer de 3 a 5 sugerencias concisas y prácticas para mejorarlo. Tus sugerencias deben ser muy específicas y contextuales. Presta mucha atención a los parámetros seleccionados para cada toma, como género, estilo, iluminación y movimiento de cámara. Por ejemplo, si el género es 'terror', sugiere una iluminación más oscura, ángulos de cámara inquietantes como un plano holandés, o movimientos de cámara lentos y sigilosos. Si el estilo es 'estilo-de-wes-anderson', sugiere composiciones simétricas o una paleta de colores pastel específica. El objetivo es proporcionar consejos específicos que mejoren la estética elegida, no comentarios genéricos. Enfoca tus comentarios en mejorar el ambiente, el interés visual, la claridad narrativa o en hacer un mejor uso de las técnicas cinematográficas que se alinien con la intención del usuario. Formula tus comentarios como consejos constructivos. Presenta tus sugerencias como una lista simple, no numerada, con viñetas usando '-' para cada punto. No añadas ningún preámbulo ni conclusión. Tu respuesta DEBE estar en ${responseLanguage}.`;
   
-  const systemInstruction = language === 'es' ? systemInstructionES : systemInstructionEN;
+  const systemInstructionEN_Thinking = `You are a world-class film director and creative visionary. Your task is to perform an in-depth analysis of the provided "shooting script" and offer detailed, insightful, and highly creative suggestions for improvement. Go beyond simple tweaks. Suggest new symbolic elements, alternative narrative beats, or advanced cinematic techniques that could elevate the concept. Deconstruct the user's intent and provide a rationale for your suggestions, explaining how they would enhance the story, mood, or visual impact. The goal is to be an inspiring creative partner. Present your suggestions as a detailed, well-structured list using "-" for each point. Do not add any preamble or conclusion. Your response MUST be in ${responseLanguage}.`;
+  const systemInstructionES_Thinking = `Eres un director de cine de talla mundial y un visionario creativo. Tu tarea es realizar un análisis en profundidad del 'guion de rodaje' proporcionado y ofrecer sugerencias detalladas, perspicaces y altamente creativas para su mejora. Ve más allá de simples ajustes. Sugiere nuevos elementos simbólicos, ritmos narrativos alternativos o técnicas cinematográficas avanzadas que puedan elevar el concepto. Deconstruye la intención del usuario y proporciona una justificación para tus sugerencias, explicando cómo mejorarían la historia, el ambiente o el impacto visual. El objetivo es ser un socio creativo inspirador. Presenta tus sugerencias como una lista detallada y bien estructurada, usando "-" para cada punto. No añadas ningún preámbulo ni conclusión. Tu respuesta DEBE estar en ${responseLanguage}.`;
 
   const userPrompt = formattedScene;
+  
+  let model: string;
+  let systemInstruction: string;
+  let config: any = { temperature: 0.7 };
+
+  if (thinkingMode) {
+    model = 'gemini-2.5-pro';
+    systemInstruction = language === 'es' ? systemInstructionES_Thinking : systemInstructionEN_Thinking;
+    config.thinkingConfig = { thinkingBudget: 32768 };
+  } else {
+    model = 'gemini-2.5-flash';
+    systemInstruction = language === 'es' ? systemInstructionES : systemInstructionEN;
+  }
+  config.systemInstruction = systemInstruction;
 
   try {
     const response = await ai.models.generateContent({
       model,
       contents: userPrompt,
-      config: {
-        systemInstruction,
-        temperature: 0.7,
-      },
+      config,
     });
 
     return response.text.trim();
@@ -293,5 +303,39 @@ ${validOptionsString}
     } catch (error) {
         console.error("Error deconstructing prompt with Gemini API:", error);
         throw new Error("Failed to deconstruct prompt. The AI could not understand the provided text or there was a network error.");
+    }
+};
+
+
+export const generateVideo = async (prompt: string, aspectRatio: '16:9' | '9:16') => {
+    // A new GenAI instance must be created before each call to ensure the latest API key is used.
+    const localAi = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    try {
+        const operation = await localAi.models.generateVideos({
+            model: 'veo-3.1-fast-generate-preview',
+            prompt,
+            config: {
+                numberOfVideos: 1,
+                resolution: '720p',
+                aspectRatio,
+            }
+        });
+        return operation;
+    } catch (error) {
+        console.error("Error calling Veo API:", error);
+        throw error;
+    }
+};
+
+
+export const getVideosOperationStatus = async (operation: any) => {
+    // A new GenAI instance must be created before each call to ensure the latest API key is used.
+    const localAi = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    try {
+        const updatedOperation = await localAi.operations.getVideosOperation({ operation });
+        return updatedOperation;
+    } catch (error) {
+        console.error("Error polling Veo operation:", error);
+        throw error;
     }
 };

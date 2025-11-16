@@ -331,6 +331,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [suggestions, setSuggestions] = useState<string | null>(null);
   const [suggestionError, setSuggestionError] = useState<string | null>(null);
+  const [thinkingMode, setThinkingMode] = useState(false);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
@@ -464,7 +465,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     setSuggestions(null);
     setSuggestionError(null);
     try {
-        const result = await getSuggestions({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent }, language);
+        const result = await getSuggestions({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent }, language, thinkingMode);
         setSuggestions(result);
     } catch (e) {
         setSuggestionError(t('promptForm.error.suggestionsFailed'));
@@ -730,7 +731,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
 
       <AdvancedPanel title={t('cameraEffects.title')}>
         <p className="text-sm text-brand-text-secondary -mt-2 mb-6">{t('cameraEffects.description')}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
                 <label htmlFor="sceneShotType" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
                     {t('promptOptions.labels.shotType')}
@@ -821,7 +822,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                     ))}
                 </select>
             </div>
-            <div>
+            <div className='lg:col-span-2'>
                 <label htmlFor="sceneDepthOfField" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
                     {t('promptOptions.labels.depthOfField')}
                 </label>
@@ -915,19 +916,28 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
        )}
 
       <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <button
-          type="button"
-          onClick={handleGetSuggestions}
-          disabled={isLoading || isSuggesting}
-          className="w-full flex items-center justify-center gap-2 bg-white border border-brand-border text-brand-text-primary hover:bg-slate-100 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-           {isSuggesting ? (
-             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              {t('buttons.thinking')}
-             </>
-           ) : t('buttons.getSuggestions') }
-        </button>
+        <div className="relative group flex items-center justify-center bg-white border border-brand-border rounded-lg">
+          <button
+            type="button"
+            onClick={handleGetSuggestions}
+            disabled={isLoading || isSuggesting}
+            className="w-full flex items-center justify-center gap-2 text-brand-text-primary hover:bg-slate-100 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSuggesting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                {t('buttons.thinking')}
+              </>
+            ) : t('buttons.getSuggestions') }
+          </button>
+          <div className="absolute left-0 bottom-full mb-2 w-full flex justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div className="bg-brand-text-primary text-white text-xs rounded py-1 px-2">{t('promptForm.thinkingModeTooltip')}</div>
+          </div>
+          <div className="absolute right-2 flex items-center">
+            <input type="checkbox" id="thinking-mode" checked={thinkingMode} onChange={(e) => setThinkingMode(e.target.checked)} className="h-4 w-4 rounded border-brand-border text-brand-accent-to focus:ring-brand-accent-to"/>
+            <label htmlFor="thinking-mode" className="ml-2 text-xs font-medium text-brand-text-secondary">{t('promptForm.thinkingMode')}</label>
+          </div>
+        </div>
         <button
           type="submit"
           disabled={isLoading || !sceneDescription.trim() || (!!cameos.trim() && !cameoConsent)}

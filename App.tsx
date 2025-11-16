@@ -1,13 +1,12 @@
-
-
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion } from './types';
-import { generatePrompt } from './services/geminiService';
+import { generatePrompt, generateVideo, getVideosOperationStatus } from './services/geminiService';
 import Header from './components/Header';
 import PromptForm from './components/PromptForm';
 import GeneratedPrompt from './components/GeneratedPrompt';
 import PromptGallery from './components/PromptGallery';
+import ApiKeyModal from './components/ApiKeyModal';
+import GeneratedVideo from './components/GeneratedVideo';
 import { useLanguage } from './context/LanguageContext';
 
 export interface SceneData extends PromptData {}
@@ -22,6 +21,15 @@ const App: React.FC = () => {
   const [promptToRemix, setPromptToRemix] = useState<SceneData | null>(null);
   const [lastGeneratedData, setLastGeneratedData] = useState<SceneData | null>(null);
   const [remixSourceId, setRemixSourceId] = useState<string | null>(null);
+  
+  // Video Generation State
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
+  const [videoGenerationError, setVideoGenerationError] = useState<string | null>(null);
+  const [videoGenerationProgress, setVideoGenerationProgress] = useState('');
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
+  const pollingInterval = useRef<number | null>(null);
+
   const { t, language } = useLanguage();
 
   useEffect(() => {
@@ -34,36 +42,45 @@ const App: React.FC = () => {
       console.error("Failed to parse prompts from localStorage", e);
       setSavedPrompts([]);
     }
+    
+    // Cleanup polling interval on unmount
+    return () => {
+        if (pollingInterval.current) {
+            clearInterval(pollingInterval.current);
+        }
+    }
   }, []);
+  
+  const resetVideoGenerationState = () => {
+    setIsGeneratingVideo(false);
+    setVideoGenerationError(null);
+    setVideoGenerationProgress('');
+    setGeneratedVideoUrl(null);
+    if (pollingInterval.current) {
+      clearInterval(pollingInterval.current);
+      pollingInterval.current = null;
+    }
+  };
 
   const handleGeneratePrompt = useCallback(async (data: SceneData) => {
     setIsLoading(true);
     setError(null);
     setGeneratedPrompt('');
+    resetVideoGenerationState(); // Reset video state for new prompt
     try {
       const prompt = await generatePrompt(data, language);
       setGeneratedPrompt(prompt);
-      setLastGeneratedData(data); // Save the data used for generation
+      setLastGeneratedData(data);
 
-      // Save query to persistent history database
       try {
         const storedHistory = localStorage.getItem(QUERY_HISTORY_KEY);
         const history = storedHistory ? JSON.parse(storedHistory) : [];
-        
-        const newQueryRecord = {
-          ...data, // All form data
-          timestamp: new Date().toISOString(),
-          generatedPrompt: prompt,
-          language: language,
-        };
-
+        const newQueryRecord = { ...data, timestamp: new Date().toISOString(), generatedPrompt: prompt, language: language };
         const updatedHistory = [...history, newQueryRecord];
         localStorage.setItem(QUERY_HISTORY_KEY, JSON.stringify(updatedHistory));
       } catch (e) {
         console.error("Failed to save query to history", e);
-        // Do not block the user flow if history saving fails
       }
-
     } catch (e) {
       setError('Failed to generate prompt. Please check your API key and try again.');
       console.error(e);
@@ -71,42 +88,91 @@ const App: React.FC = () => {
       setIsLoading(false);
     }
   }, [language]);
+  
+  const startVideoGeneration = useCallback(async () => {
+    if (!generatedPrompt || !lastGeneratedData) return;
+    
+    resetVideoGenerationState();
+    setIsGeneratingVideo(true);
+    setVideoGenerationProgress(t('generatedVideo.progress.start'));
+
+    try {
+        let operation = await generateVideo(generatedPrompt, lastGeneratedData.aspectRatio as '16:9' | '9:16');
+        setVideoGenerationProgress(t('generatedVideo.progress.running'));
+
+        pollingInterval.current = window.setInterval(async () => {
+            try {
+                operation = await getVideosOperationStatus(operation);
+                if (operation.done) {
+                    if (pollingInterval.current) clearInterval(pollingInterval.current);
+                    setIsGeneratingVideo(false);
+
+                    if (operation.error) {
+                        console.error('Video generation error:', operation.error);
+                        setVideoGenerationError(operation.error.message || t('generatedVideo.error'));
+                        return;
+                    }
+
+                    setVideoGenerationProgress(t('generatedVideo.progress.downloading'));
+                    const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
+                    if (downloadLink) {
+                         const response = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+                         if (!response.ok) throw new Error(`Failed to download video: ${response.statusText}`);
+                         const blob = await response.blob();
+                         const objectUrl = URL.createObjectURL(blob);
+                         setGeneratedVideoUrl(objectUrl);
+                         setVideoGenerationProgress(t('generatedVideo.progress.complete'));
+                    } else {
+                        throw new Error("Video generation completed but no download link was found.");
+                    }
+                }
+            } catch (pollError: any) {
+                console.error("Polling error:", pollError);
+                if (pollingInterval.current) clearInterval(pollingInterval.current);
+                setIsGeneratingVideo(false);
+                if (pollError.message?.includes('Requested entity was not found')) {
+                    setVideoGenerationError(t('generatedVideo.errorKey'));
+                } else {
+                    setVideoGenerationError(pollError.message || t('generatedVideo.error'));
+                }
+            }
+        }, 5000);
+
+    } catch (initialError: any) {
+        console.error("Video generation failed to start:", initialError);
+        setIsGeneratingVideo(false);
+         if (initialError.message?.includes('Requested entity was not found')) {
+            setVideoGenerationError(t('generatedVideo.errorKey'));
+        } else {
+            setVideoGenerationError(initialError.message || t('generatedVideo.error'));
+        }
+    }
+  }, [generatedPrompt, lastGeneratedData, t]);
+
+  const handleInitiateVideoGeneration = useCallback(async () => {
+    const hasKey = await (window as any).aistudio?.hasSelectedApiKey();
+    if (hasKey) {
+        startVideoGeneration();
+    } else {
+        setIsApiKeyModalOpen(true);
+    }
+  }, [startVideoGeneration]);
+
 
   const handleSavePrompt = useCallback((versionNotes: string) => {
     if (!generatedPrompt || !lastGeneratedData) return;
-
-    const newVersion: PromptVersion = {
-      ...lastGeneratedData,
-      prompt: generatedPrompt,
-      versionNotes,
-      createdAt: new Date().toISOString(),
-    };
-
+    const newVersion: PromptVersion = { ...lastGeneratedData, prompt: generatedPrompt, versionNotes, createdAt: new Date().toISOString() };
     let updatedPrompts;
-
     if (remixSourceId) {
-      // This is a new version of an existing prompt.
-      updatedPrompts = savedPrompts.map(p => {
-        if (p.id === remixSourceId) {
-          // Prepend the new version to the history
-          return { ...p, versions: [newVersion, ...p.versions] };
-        }
-        return p;
-      });
+      updatedPrompts = savedPrompts.map(p => p.id === remixSourceId ? { ...p, versions: [newVersion, ...p.versions] } : p);
     } else {
-      // This is a brand new prompt (or from an import).
-      const newSavedPrompt: SavedPrompt = {
-        id: Date.now().toString(),
-        versions: [newVersion],
-        visibility: 'private',
-      };
+      const newSavedPrompt: SavedPrompt = { id: Date.now().toString(), versions: [newVersion], visibility: 'private' };
       updatedPrompts = [newSavedPrompt, ...savedPrompts];
     }
-    
     setSavedPrompts(updatedPrompts);
     localStorage.setItem('sora-prompts', JSON.stringify(updatedPrompts));
     setLastGeneratedData(null);
-    setRemixSourceId(null); // Clear remix/import source after saving
+    setRemixSourceId(null);
   }, [savedPrompts, generatedPrompt, lastGeneratedData, remixSourceId]);
 
   const handleDeletePrompt = useCallback((id: string) => {
@@ -118,8 +184,7 @@ const App: React.FC = () => {
   const handleToggleVisibility = useCallback((id: string) => {
     const updatedPrompts = savedPrompts.map(p => {
       if (p.id === id) {
-        const newVisibility: 'public' | 'private' = p.visibility === 'public' ? 'private' : 'public';
-        return { ...p, visibility: newVisibility };
+        return { ...p, visibility: p.visibility === 'public' ? 'private' : 'public' };
       }
       return p;
     });
@@ -129,25 +194,23 @@ const App: React.FC = () => {
 
   const handleRemixPrompt = useCallback((promptId: string, version: PromptVersion) => {
     setPromptToRemix({
-      sceneDescription: version.sceneDescription,
-      shots: version.shots,
-      cameos: version.cameos,
-      cameoDescription: version.cameoDescription || '',
+      sceneDescription: version.sceneDescription, shots: version.shots, cameos: version.cameos, cameoDescription: version.cameoDescription || '',
       audio: version.audio || { dialogue: '', soundEffects: '', music: '' },
       physics: version.physics || { weightAndRigidity: '', materialInteractions: '', environmentalForces: '' },
       cameraEffects: version.cameraEffects || { depthOfField: 'natural', cameraMovement: 'none', cameraAnimation: 'none' },
-      aspectRatio: version.aspectRatio || '16:9',
-      cameoConsent: version.cameoConsent || false,
+      aspectRatio: version.aspectRatio || '16:9', cameoConsent: version.cameoConsent || false,
     });
     setRemixSourceId(promptId);
-    setGeneratedPrompt(''); // Clear previous generation
+    setGeneratedPrompt('');
+    resetVideoGenerationState();
     document.getElementById('architect-tool')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const handleDeconstructedPrompt = useCallback((data: SceneData) => {
     setPromptToRemix(data);
-    setRemixSourceId(null); // Ensure this is null to indicate it's not a remix of a saved prompt
+    setRemixSourceId(null);
     setGeneratedPrompt('');
+    resetVideoGenerationState();
     document.getElementById('architect-tool')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
   
@@ -161,22 +224,27 @@ const App: React.FC = () => {
   };
 
   return (
+    <>
+    <ApiKeyModal 
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+        onSelectKey={async () => {
+            await (window as any).aistudio?.openSelectKey();
+            setIsApiKeyModalOpen(false);
+            startVideoGeneration();
+        }}
+    />
     <div className="min-h-screen bg-brand-bg font-sans">
       <Header />
       <main className="container mx-auto p-4 md:p-8">
         
-        {/* Hero Section */}
         <section className="text-center py-20 md:py-32">
             <h1 className="text-4xl md:text-6xl font-black text-brand-text-primary tracking-tighter">
                 {t('hero.title.1')} <span className="bg-gradient-to-r from-brand-accent-from to-brand-accent-to bg-clip-text text-transparent">{t('hero.title.2')}</span> {t('hero.title.3')}
             </h1>
-            <p className="max-w-2xl mx-auto mt-6 text-lg text-brand-text-secondary">
-                {t('hero.subtitle')}
-            </p>
+            <p className="max-w-2xl mx-auto mt-6 text-lg text-brand-text-secondary">{t('hero.subtitle')}</p>
             <div className="mt-8">
-                <button 
-                  onClick={handleScrollToArchitect} 
-                  className="px-8 py-3 text-lg bg-gradient-to-r from-brand-accent-from to-brand-accent-to text-white font-bold rounded-lg transition-all duration-300 hover:shadow-glow-lg">
+                <button onClick={handleScrollToArchitect} className="px-8 py-3 text-lg bg-gradient-to-r from-brand-accent-from to-brand-accent-to text-white font-bold rounded-lg transition-all duration-300 hover:shadow-glow-lg">
                     {t('hero.cta')}
                 </button>
             </div>
@@ -184,14 +252,7 @@ const App: React.FC = () => {
 
         <div id="architect-tool" className="grid grid-cols-1 lg:grid-cols-5 gap-10 scroll-mt-24">
           <div className="lg:col-span-3 bg-brand-surface p-6 rounded-2xl border border-brand-border shadow-xl">
-            <PromptForm 
-              onGenerate={handleGeneratePrompt} 
-              isLoading={isLoading} 
-              initialData={promptToRemix}
-              remixSourceId={remixSourceId}
-              onClearRemix={handleClearRemix}
-              onDeconstruct={handleDeconstructedPrompt}
-            />
+            <PromptForm onGenerate={handleGeneratePrompt} isLoading={isLoading} initialData={promptToRemix} remixSourceId={remixSourceId} onClearRemix={handleClearRemix} onDeconstruct={handleDeconstructedPrompt} />
           </div>
           <div className="lg:col-span-2 flex flex-col gap-8">
             {error && (
@@ -200,11 +261,15 @@ const App: React.FC = () => {
               </div>
             )}
             {generatedPrompt && (
-              <GeneratedPrompt
-                prompt={generatedPrompt}
-                onSave={handleSavePrompt}
-                canSave={!!lastGeneratedData}
-              />
+              <GeneratedPrompt prompt={generatedPrompt} onSave={handleSavePrompt} canSave={!!lastGeneratedData} onGenerateVideo={handleInitiateVideoGeneration} isGeneratingVideo={isGeneratingVideo} aspectRatio={lastGeneratedData?.aspectRatio || '16:9'} />
+            )}
+            {(isGeneratingVideo || generatedVideoUrl || videoGenerationError) && (
+                <GeneratedVideo
+                    isLoading={isGeneratingVideo}
+                    progressMessage={videoGenerationProgress}
+                    videoUrl={generatedVideoUrl}
+                    error={videoGenerationError}
+                />
             )}
             {!generatedPrompt && !isLoading && (
                  <div className="h-full flex flex-col items-center justify-center bg-brand-surface border-2 border-dashed border-brand-border rounded-2xl p-8 text-center">
@@ -219,15 +284,11 @@ const App: React.FC = () => {
         </div>
 
         <section className="mt-20 md:mt-32">
-          <PromptGallery
-            prompts={savedPrompts}
-            onRemix={handleRemixPrompt}
-            onDelete={handleDeletePrompt}
-            onToggleVisibility={handleToggleVisibility}
-          />
+          <PromptGallery prompts={savedPrompts} onRemix={handleRemixPrompt} onDelete={handleDeletePrompt} onToggleVisibility={handleToggleVisibility} />
         </section>
       </main>
     </div>
+    </>
   );
 };
 
