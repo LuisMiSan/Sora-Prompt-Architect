@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Shot, PromptParameters } from '../types';
 import { SceneData } from "../App";
@@ -10,18 +9,21 @@ function formatSceneForPrompt(data: SceneData): string {
   let formattedString = `SCENE DESCRIPTION: ${data.sceneDescription}\n`;
   formattedString += `ASPECT RATIO: ${data.aspectRatio}\n\n`;
 
-  if (data.cameraEffects && (data.cameraEffects.cameraMovement !== 'none' || data.cameraEffects.depthOfField !== 'natural' || (data.cameraEffects.cameraAnimation && data.cameraEffects.cameraAnimation !== 'none'))) {
-    formattedString += `SCENE-WIDE CAMERA EFFECTS (Defaults for all shots unless specified otherwise):\n`;
-    if (data.cameraEffects.cameraMovement !== 'none') {
-        formattedString += `  - Camera Movement: ${data.cameraEffects.cameraMovement.replace(/-/g, ' ')}\n`;
+  const { cameraEffects } = data;
+  if (cameraEffects) {
+    const effects: string[] = [];
+    if (cameraEffects.shotType && cameraEffects.shotType !== 'medium-shot') effects.push(`  - Shot Type: ${cameraEffects.shotType.replace(/-/g, ' ')}`);
+    if (cameraEffects.cameraAngle && cameraEffects.cameraAngle !== 'eye-level') effects.push(`  - Camera Angle: ${cameraEffects.cameraAngle.replace(/-/g, ' ')}`);
+    if (cameraEffects.lens && cameraEffects.lens !== '35mm') effects.push(`  - Lens: ${cameraEffects.lens.replace(/-/g, ' ')}`);
+    if (cameraEffects.composition && cameraEffects.composition !== 'rule-of-thirds') effects.push(`  - Composition: ${cameraEffects.composition.replace(/-/g, ' ')}`);
+    if (cameraEffects.cameraMovement && cameraEffects.cameraMovement !== 'none') effects.push(`  - Camera Movement: ${cameraEffects.cameraMovement.replace(/-/g, ' ')}`);
+    if (cameraEffects.depthOfField && cameraEffects.depthOfField !== 'natural') effects.push(`  - Depth of Field: ${cameraEffects.depthOfField.replace(/-/g, ' ')}`);
+    if (cameraEffects.cameraAnimation && cameraEffects.cameraAnimation !== 'none') effects.push(`  - Camera Animation: ${cameraEffects.cameraAnimation.replace(/-/g, ' ')}`);
+    
+    if (effects.length > 0) {
+      formattedString += `SCENE-WIDE CAMERA & COMPOSITION (Defaults for all shots unless specified otherwise):\n`;
+      formattedString += effects.join('\n') + '\n\n';
     }
-    if (data.cameraEffects.depthOfField !== 'natural') {
-        formattedString += `  - Depth of Field: ${data.cameraEffects.depthOfField.replace(/-/g, ' ')}\n`;
-    }
-    if (data.cameraEffects.cameraAnimation && data.cameraEffects.cameraAnimation !== 'none') {
-        formattedString += `  - Camera Animation: ${data.cameraEffects.cameraAnimation.replace(/-/g, ' ')}\n`;
-    }
-    formattedString += `\n`;
   }
 
   if (data.cameos.trim()) {
@@ -126,7 +128,7 @@ export const getSuggestions = async (data: SceneData, language: string): Promise
 
   const systemInstructionEN = `You are a creative assistant and expert filmmaker. Your task is to analyze the provided "shooting script" and offer 3-5 concise, actionable suggestions for improvement. Your suggestions must be highly targeted and context-aware. Pay close attention to the selected parameters for each shot, such as genre, style, lighting, and camera movement. For example, if the genre is 'horror', suggest darker lighting, unsettling camera angles like a dutch-angle, or slow, creeping camera movements. If the style is 'style-of-wes-anderson', suggest symmetrical compositions or a specific pastel color palette. The goal is to provide specific advice that enhances the chosen aesthetic, not generic feedback. Focus on enhancing mood, visual interest, narrative clarity, or making better use of cinematic techniques that align with the user's intent. Frame your feedback as constructive advice. Present your suggestions as a simple, unnumbered, bulleted list using "-" for each point. Do not add any preamble or conclusion. Your response MUST be in ${responseLanguage}.`;
 
-  const systemInstructionES = `Eres un asistente creativo y cineasta experto. Tu tarea es analizar el 'guion de rodaje' proporcionado y ofrecer de 3 a 5 sugerencias concisas y prácticas para mejorarlo. Tus sugerencias deben ser muy específicas y contextuales. Presta mucha atención a los parámetros seleccionados para cada toma, como género, estilo, iluminación y movimiento de cámara. Por ejemplo, si el género es 'terror', sugiere una iluminación más oscura, ángulos de cámara inquietantes como un plano holandés, o movimientos de cámara lentos y sigilosos. Si el estilo es 'estilo-de-wes-anderson', sugiere composiciones simétricas o una paleta de colores pastel específica. El objetivo es proporcionar consejos específicos que mejoren la estética elegida, no comentarios genéricos. Enfoca tus comentarios en mejorar el ambiente, el interés visual, la claridad narrativa o en hacer un mejor uso de las técnicas cinematográficas que se alineen con la intención del usuario. Formula tus comentarios como consejos constructivos. Presenta tus sugerencias como una lista simple, no numerada, con viñetas usando '-' para cada punto. No añadas ningún preámbulo ni conclusión. Tu respuesta DEBE estar en ${responseLanguage}.`;
+  const systemInstructionES = `Eres un asistente creativo y cineasta experto. Tu tarea es analizar el 'guion de rodaje' proporcionado y ofrecer de 3 a 5 sugerencias concisas y prácticas para mejorarlo. Tus sugerencias deben ser muy específicas y contextuales. Presta mucha atención a los parámetros seleccionados para cada toma, como género, estilo, iluminación y movimiento de cámara. Por ejemplo, si el género es 'terror', sugiere una iluminación más oscura, ángulos de cámara inquietantes como un plano holandés, o movimientos de cámara lentos y sigilosos. Si el estilo es 'estilo-de-wes-anderson', sugiere composiciones simétricas o una paleta de colores pastel específica. El objetivo es proporcionar consejos específicos que mejoren la estética elegida, no comentarios genéricos. Enfoca tus comentarios en mejorar el ambiente, el interés visual, la claridad narrativa o en hacer un mejor uso de las técnicas cinematográficas que se alinien con la intención del usuario. Formula tus comentarios como consejos constructivos. Presenta tus sugerencias como una lista simple, no numerada, con viñetas usando '-' para cada punto. No añadas ningún preámbulo ni conclusión. Tu respuesta DEBE estar en ${responseLanguage}.`;
   
   const systemInstruction = language === 'es' ? systemInstructionES : systemInstructionEN;
 
@@ -215,6 +217,10 @@ const deconstructionSchema = {
         cameraEffects: {
             type: Type.OBJECT,
             properties: {
+                shotType: { type: Type.STRING, description: "The default shot type for the scene (e.g., 'medium-shot', 'close-up')." },
+                cameraAngle: { type: Type.STRING, description: "The default camera angle for the scene (e.g., 'eye-level', 'low-angle')." },
+                lens: { type: Type.STRING, description: "The default camera lens for the scene (e.g., '35mm', '85mm')." },
+                composition: { type: Type.STRING, description: "The default composition rule for the scene (e.g., 'rule-of-thirds', 'centered')." },
                 depthOfField: { type: Type.STRING, description: "The overall depth of field for the scene (e.g., 'shallow', 'deep')." },
                 cameraMovement: { type: Type.STRING, description: "A default camera movement for the whole scene (e.g., 'handheld', 'slow-pan-left')." },
                 cameraAnimation: { type: Type.STRING, description: "A default camera animation for the whole scene (e.g., 'slow-pan-left', 'handheld-shake')." },

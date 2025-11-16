@@ -111,7 +111,7 @@
     "musicPlaceholder": "Ej: Una partitura de sintetizador baja y tensa aumenta; la música se corta en el impacto."
   },
   "cameraEffects": {
-    "title": "🎥 Efectos de Cámara para Toda la Escena",
+    "title": "🎥 Efectos de Cámara y Composición para Toda la Escena",
     "description": "Establece comportamientos de cámara predeterminados para todas las tomas. Estos pueden ser anulados en los parámetros de cada toma.",
     "cameraAnimation": "Animación de Cámara"
   },

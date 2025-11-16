@@ -6,7 +6,7 @@ export const initialParameters: PromptParameters = {
   cameraMovement: 'none',
   lens: '35mm',
   composition: 'rule-of-thirds',
-  lighting: 'cinematic',
+  lighting: 'blue-hour',
   style: 'photorealistic',
   filmQuality: '4k',
   pacing: 'normal',
@@ -14,7 +14,7 @@ export const initialParameters: PromptParameters = {
   location: 'unspecified',
   depthOfField: 'natural',
   texture: 'standard-definition',
-  colorPalette: 'vibrant',
+  colorPalette: 'cool-tones',
   genre: 'drama',
 };
 

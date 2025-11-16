@@ -1,4 +1,5 @@
 
+
 export interface PromptParameters {
   shotType: string;
   cameraAngle: string;
@@ -40,6 +41,10 @@ export interface CameraEffectsData {
   depthOfField: string;
   cameraMovement: string;
   cameraAnimation: string;
+  shotType?: string;
+  cameraAngle?: string;
+  lens?: string;
+  composition?: string;
 }
 
 export interface PromptData {

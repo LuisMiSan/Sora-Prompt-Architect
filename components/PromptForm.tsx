@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData } from '../types';
 import { PROMPT_OPTIONS, initialParameters, ASPECT_RATIO_OPTIONS } from '../constants';
@@ -124,6 +122,10 @@ const initialCameraEffects: CameraEffectsData = {
   depthOfField: 'natural',
   cameraMovement: 'none',
   cameraAnimation: 'none',
+  shotType: 'medium-shot',
+  cameraAngle: 'eye-level',
+  lens: '35mm',
+  composition: 'rule-of-thirds',
 };
 
 const parameterGroups: Record<string, (keyof PromptParameters)[]> = {
@@ -728,18 +730,63 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
 
       <AdvancedPanel title={t('cameraEffects.title')}>
         <p className="text-sm text-brand-text-secondary -mt-2 mb-6">{t('cameraEffects.description')}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label htmlFor="sceneDepthOfField" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
-                    {t('promptOptions.labels.depthOfField')}
+                <label htmlFor="sceneShotType" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.shotType')}
                 </label>
                 <select
-                    id="sceneDepthOfField"
-                    value={cameraEffects.depthOfField}
-                    onChange={(e) => setCameraEffects(prev => ({...prev, depthOfField: e.target.value}))}
+                    id="sceneShotType"
+                    value={cameraEffects.shotType || 'medium-shot'}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, shotType: e.target.value}))}
                     className={inputBaseClasses}
                 >
-                    {PROMPT_OPTIONS.depthOfField.map(option => (
+                    {PROMPT_OPTIONS.shotType.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="sceneCameraAngle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.cameraAngle')}
+                </label>
+                <select
+                    id="sceneCameraAngle"
+                    value={cameraEffects.cameraAngle || 'eye-level'}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, cameraAngle: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.cameraAngle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="sceneLens" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.lens')}
+                </label>
+                <select
+                    id="sceneLens"
+                    value={cameraEffects.lens || '35mm'}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, lens: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.lens.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="sceneComposition" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.composition')}
+                </label>
+                <select
+                    id="sceneComposition"
+                    value={cameraEffects.composition || 'rule-of-thirds'}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, composition: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.composition.map(option => (
                         <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
                     ))}
                 </select>
@@ -770,6 +817,21 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                     className={inputBaseClasses}
                 >
                     {PROMPT_OPTIONS.cameraAnimation.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="sceneDepthOfField" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('promptOptions.labels.depthOfField')}
+                </label>
+                <select
+                    id="sceneDepthOfField"
+                    value={cameraEffects.depthOfField}
+                    onChange={(e) => setCameraEffects(prev => ({...prev, depthOfField: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.depthOfField.map(option => (
                         <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
                     ))}
                 </select>

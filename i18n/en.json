@@ -111,7 +111,7 @@
     "musicPlaceholder": "e.g., A low, tense synthesizer score swells; music cuts out on impact."
   },
   "cameraEffects": {
-    "title": "🎥 Scene-Wide Camera Effects",
+    "title": "🎥 Scene-Wide Camera & Composition",
     "description": "Set default camera behaviors for all shots. These can be overridden in individual shot parameters.",
     "cameraAnimation": "Camera Animation"
   },
