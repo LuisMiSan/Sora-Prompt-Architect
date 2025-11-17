@@ -1038,12 +1038,12 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
        )}
 
       <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="relative group flex items-center justify-center bg-brand-ui-bg border border-brand-border rounded-lg">
+        <div className="relative group flex items-stretch bg-brand-ui-bg border border-brand-border rounded-lg">
           <button
             type="button"
             onClick={handleGetSuggestions}
             disabled={isLoading || isSuggesting}
-            className="w-full flex items-center justify-center gap-2 text-brand-text-primary hover:bg-slate-600 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-grow flex items-center justify-center gap-2 text-brand-text-primary hover:bg-slate-600/70 font-bold py-3 pl-4 pr-2 rounded-l-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSuggesting ? (
               <>
@@ -1053,11 +1053,11 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
             ) : t('buttons.getSuggestions') }
           </button>
           <div className="absolute left-0 bottom-full mb-2 w-full flex justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              <div className="bg-brand-text-primary text-white text-xs rounded py-1 px-2">{t('promptForm.thinkingModeTooltip')}</div>
+              <div className="bg-brand-text-primary text-brand-bg text-xs rounded py-1 px-2 shadow-lg">{t('promptForm.thinkingModeTooltip')}</div>
           </div>
-          <div className="absolute right-2 flex items-center">
+          <div className="flex-shrink-0 flex items-center pl-2 pr-3 border-l border-brand-border">
             <input type="checkbox" id="thinking-mode" checked={thinkingMode} onChange={(e) => setThinkingMode(e.target.checked)} className="h-4 w-4 rounded border-brand-border text-brand-accent-to focus:ring-brand-accent-to"/>
-            <label htmlFor="thinking-mode" className="ml-2 text-xs font-medium text-brand-text-secondary">{t('promptForm.thinkingMode')}</label>
+            <label htmlFor="thinking-mode" className="ml-2 text-xs font-medium text-brand-text-secondary whitespace-nowrap">{t('promptForm.thinkingMode')}</label>
           </div>
         </div>
         <button
