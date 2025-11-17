@@ -97,22 +97,30 @@
       "context": "🌍 Contexto"
     }
   },
+  "animationSettings": {
+    "title": "🎨 Animación y Estilo",
+    "description": "Define el estilo de animación específico para tu escena. Estos ajustes funcionan mejor cuando el parámetro principal de 'Estilo' también se establece en un tipo de animación.",
+    "animationStyle": "Estilo General de Animación",
+    "characterDesign": "Diseño de Personajes",
+    "backgroundStyle": "Estilo de Fondos",
+    "renderingStyle": "Estilo de Renderizado",
+    "frameRate": "Velocidad de Fotogramas"
+  },
   "advancedSettings": {
     "title": "🔬 Física y Audio Avanzados",
     "physicsEngine": "Motor de Física",
     "weightAndRigidity": "Peso y Rigidez de Objetos",
-    "weightAndRigidityPlaceholder": "Ej: Los objetos tienen un peso significativo; las telas son rígidas.",
     "materialInteractions": "Propiedades e Interacciones de Materiales",
-    "materialInteractionsPlaceholder": "Ej: Las gotas de lluvia pesadas salpican de forma realista; el vidrio se rompe en finos pedazos.",
     "environmentalForces": "Fuerzas Ambientales",
-    "environmentalForcesPlaceholder": "Ej: Gravedad baja; vientos fuertes afectan el movimiento del personaje.",
     "soundscape": "Paisaje Sonoro",
     "dialogue": "Detalles de Diálogo",
     "dialoguePlaceholder": "Ej: Un personaje susurra, 'He estado esperando...'",
     "sfx": "Efectos de Sonido Específicos (SFX)",
     "sfxPlaceholder": "Ej: Lluvia crepitante, sirenas lejanas, el crujido de un letrero de neón.",
     "music": "Música Ambiental y Pistas",
-    "musicPlaceholder": "Ej: Una partitura de sintetizador baja y tensa aumenta; la música se corta en el impacto."
+    "musicPlaceholder": "Ej: Una partitura de sintetizador baja y tensa aumenta; la música se corta en el impacto.",
+    "musicStyle": "Estilo General de Música",
+    "sfxStyle": "Estilo General de SFX"
   },
   "cameraEffects": {
     "title": "🎥 Efectos de Cámara y Composición para Toda la Escena",
@@ -176,7 +184,98 @@
   },
   "promptOptions": {
     "labels": {
-        "shotType": "Tipo de Plano", "cameraAngle": "Ángulo de Cámara", "cameraMovement": "Movimiento de Cámara", "cameraAnimation": "Animación de Cámara", "lens": "Lente", "composition": "Composición", "lighting": "Iluminación", "style": "Estilo", "filmQuality": "Calidad de Película", "pacing": "Ritmo", "timeOfDay": "Momento del Día", "location": "Ubicación", "depthOfField": "Profundidad de Campo", "texture": "Textura", "colorPalette": "Paleta de Colores", "genre": "Género"
+        "animationStyle": "Estilo de Animación",
+        "characterDesign": "Diseño de Personajes",
+        "backgroundStyle": "Estilo de Fondo",
+        "renderingStyle": "Estilo de Renderizado",
+        "frameRate": "Velocidad de Fotogramas",
+        "shotType": "Tipo de Plano", "cameraAngle": "Ángulo de Cámara", "cameraMovement": "Movimiento de Cámara", "cameraAnimation": "Animación de Cámara", "lens": "Lente", "composition": "Composición", "lighting": "Iluminación", "style": "Estilo", "filmQuality": "Calidad de Película", "pacing": "Ritmo", "timeOfDay": "Momento del Día", "location": "Ubicación", "depthOfField": "Profundidad de Campo", "texture": "Textura", "colorPalette": "Paleta de Colores", "genre": "Género",
+        "weightAndRigidity": "Peso y Rigidez",
+        "materialInteractions": "Interacciones de Materiales",
+        "environmentalForces": "Fuerzas Ambientales",
+        "musicStyle": "Estilo de Música",
+        "sfxStyle": "Estilo de SFX"
+    },
+    "animationStyle": {
+      "none": "Sin especificar",
+      "2dTraditional": "2D Tradicional (Dibujado a mano)",
+      "3dCgi": "Animación 3D CGI",
+      "stopMotion": "Stop-motion",
+      "anime": "Anime",
+      "motionGraphics": "Gráficos en Movimiento",
+      "cutOut": "Animación de Recortes"
+    },
+    "characterDesign": {
+      "none": "Sin especificar",
+      "pixar": "Estilo Pixar",
+      "ghibli": "Estilo Ghibli",
+      "looneyTunes": "Looney Tunes Clásico",
+      "90sAnime": "Estilo Anime de los 90",
+      "calarts": "Estilo CalArts",
+      "southPark": "Estilo South Park",
+      "rickAndMorty": "Estilo Rick and Morty"
+    },
+    "backgroundStyle": {
+      "none": "Sin especificar",
+      "watercolor": "Acuarela",
+      "mattePainting": "Pintura Mate",
+      "ghibli": "Estilo Ghibli",
+      "vectorArt": "Arte Vectorial",
+      "stylized3d": "3D Estilizado"
+    },
+    "renderingStyle": {
+      "none": "Sin especificar",
+      "celShaded": "Cel-shading",
+      "claymation": "Plastimación (Claymation)",
+      "paperCutOut": "Recortes de Papel",
+      "glitchArt": "Arte Glitch",
+      "rotoscoping": "Rotoscopia",
+      "pixelArt": "Pixel Art"
+    },
+    "frameRate": {
+      "none": "Sin especificar",
+      "onTwos": "A saltos (12fps)",
+      "smooth": "Fluido (24fps)",
+      "variable": "Variable / Dinámico",
+      "low": "Baja Tasa de Fotogramas"
+    },
+    "weightAndRigidity": {
+      "normal": "Gravedad Normal / Realista",
+      "lowGravity": "Baja Gravedad / Flotante",
+      "highGravity": "Alta Gravedad / Pesado",
+      "lightweight": "Ligero y Flotante",
+      "heavy": "Extremadamente Pesado y Rígido"
+    },
+    "materialInteractions": {
+      "realistic": "Interacciones Realistas",
+      "cartoonish": "Exagerado / Caricaturesco",
+      "brittle": "Frágil (se rompe fácil)",
+      "soft": "Suave y Rebotante",
+      "none": "Sin especificar"
+    },
+    "environmentalForces": {
+      "none": "Sin Fuerzas Significativas",
+      "strongWind": "Viento Fuerte",
+      "gentleBreeze": "Brisa Suave",
+      "underwater": "Corrientes Submarinas",
+      "magnetic": "Fuerzas Magnéticas"
+    },
+    "musicStyle": {
+      "none": "Sin especificar",
+      "orchestral": "Partitura Orquestal",
+      "synth": "Sintetizador / Electrónica",
+      "lofi": "Lo-fi Hip Hop",
+      "ambient": "Ambiental",
+      "rock": "Himno de Rock",
+      "jazz": "Jazz"
+    },
+    "sfxStyle": {
+      "none": "Sin especificar",
+      "realistic": "Realista",
+      "cinematic": "Cinemático / Impactante",
+      "cartoon": "Caricaturesco (Boinks, Zaps)",
+      "scifi": "Ciencia Ficción (Zumbidos, Beeps)",
+      "fantasy": "Fantasía (Mágico)"
     },
     "aspectRatio": {
         "widescreen": "16:9 (Panorámico)", "vertical": "9:16 (Vertical)", "square": "1:1 (Cuadrado)", "classic": "4:3 (TV Clásico)", "cinemascope": "2.39:1 (Cinemascope)"

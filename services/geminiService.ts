@@ -35,22 +35,44 @@ function formatSceneForPrompt(data: SceneData): string {
     formattedString += `CAMEO CONSENT: ${data.cameoConsent ? 'User has acknowledged consent requirements.' : 'Consent not specified.'}\n\n`;
   }
 
-  const { audio, physics } = data;
+  const { audio, physics, animation } = data;
+
+  let animationStyle = '';
+  if (animation.animationStyle && animation.animationStyle !== 'none') animationStyle += `  - Overall Style: ${animation.animationStyle.replace(/-/g, ' ')}\n`;
+  if (animation.characterDesign && animation.characterDesign !== 'none') animationStyle += `  - Character Design: ${animation.characterDesign.replace(/-/g, ' ')}\n`;
+  if (animation.backgroundStyle && animation.backgroundStyle !== 'none') animationStyle += `  - Background Style: ${animation.backgroundStyle.replace(/-/g, ' ')}\n`;
+  if (animation.renderingStyle && animation.renderingStyle !== 'none') animationStyle += `  - Rendering: ${animation.renderingStyle.replace(/-/g, ' ')}\n`;
+  if (animation.frameRate && animation.frameRate !== 'none') animationStyle += `  - Frame Rate: ${animation.frameRate.replace(/-/g, ' ')}\n`;
+  if (animationStyle) {
+    formattedString += `ANIMATION STYLE:\n${animationStyle}\n`;
+  }
+
   let audioDesign = '';
   if (audio.dialogue.trim()) audioDesign += `  - Dialogue: ${audio.dialogue}\n`;
-  if (audio.soundEffects.trim()) audioDesign += `  - SFX: ${audio.soundEffects}\n`;
-  if (audio.music.trim()) audioDesign += `  - Music: ${audio.music}\n`;
+
+  const sfxStyle = audio.sfxStyle && audio.sfxStyle !== 'none' ? `[Style: ${audio.sfxStyle.replace(/-/g, ' ')}] ` : '';
+  if (audio.soundEffects.trim() || sfxStyle) {
+    audioDesign += `  - SFX: ${sfxStyle}${audio.soundEffects}\n`;
+  }
+  
+  const musicStyle = audio.musicStyle && audio.musicStyle !== 'none' ? `[Style: ${audio.musicStyle.replace(/-/g, ' ')}] ` : '';
+  if (audio.music.trim() || musicStyle) {
+    audioDesign += `  - Music: ${musicStyle}${audio.music}\n`;
+  }
+
   if (audioDesign) {
     formattedString += `SOUND DESIGN:\n${audioDesign}\n`;
   }
 
+
   let physicsEngine = '';
-  if (physics.weightAndRigidity.trim()) physicsEngine += `  - Weight & Rigidity: ${physics.weightAndRigidity}\n`;
-  if (physics.materialInteractions.trim()) physicsEngine += `  - Material Interactions: ${physics.materialInteractions}\n`;
-  if (physics.environmentalForces.trim()) physicsEngine += `  - Environmental Forces: ${physics.environmentalForces}\n`;
+  if (physics.weightAndRigidity && physics.weightAndRigidity !== 'normal-gravity') physicsEngine += `  - Weight & Rigidity: ${physics.weightAndRigidity.replace(/-/g, ' ')}\n`;
+  if (physics.materialInteractions && physics.materialInteractions !== 'realistic') physicsEngine += `  - Material Interactions: ${physics.materialInteractions.replace(/-/g, ' ')}\n`;
+  if (physics.environmentalForces && physics.environmentalForces !== 'none') physicsEngine += `  - Environmental Forces: ${physics.environmentalForces.replace(/-/g, ' ')}\n`;
   if (physicsEngine) {
     formattedString += `PHYSICS & INTERACTIONS:\n${physicsEngine}\n`;
   }
+
 
   formattedString += `--- SHOT LIST ---\n\n`;
 
@@ -91,9 +113,9 @@ export const generatePrompt = async (data: SceneData, language: string): Promise
   };
   const responseLanguage = languageMap[language] || 'English';
 
-  const systemInstructionEN = `You are an expert director of photography and prompt engineer for advanced text-to-video AI models like Sora. Your task is to interpret a structured "shooting script" containing a scene description, characters, sound design, physics, consent information, and a detailed shot list with specific constraints and genres. Synthesize all this information into a single, cohesive, and vivid paragraph. The final prompt should be rich with descriptive detail, capturing the mood, atmosphere, physical interactions, and cinematic qualities specified. Do not add any preamble, explanation, or markdown formatting; just return the final, camera-ready prompt itself. Your final response MUST be in ${responseLanguage}.`;
+  const systemInstructionEN = `You are an expert director of photography and prompt engineer for advanced text-to-video AI models like Sora. Your task is to interpret a structured "shooting script" containing a scene description, characters, sound design, physics, consent information, animation styles, and a detailed shot list with specific constraints and genres. Synthesize all this information into a single, cohesive, and vivid paragraph. The final prompt should be rich with descriptive detail, capturing the mood, atmosphere, physical interactions, and cinematic qualities specified. Do not add any preamble, explanation, or markdown formatting; just return the final, camera-ready prompt itself. Your final response MUST be in ${responseLanguage}.`;
   
-  const systemInstructionES = `Eres un experto director de fotografía e ingeniero de prompts para modelos avanzados de IA de texto a video como Sora. Tu tarea es interpretar un 'guion de rodaje' estructurado que contiene una descripción de la escena, personajes, diseño de sonido, física, información de consentimiento y una lista de tomas detallada con restricciones y géneros específicos. Sintetiza toda esta información en un único párrafo cohesivo y vívido. El prompt final debe ser rico en detalles descriptivos, capturando el estado de ánimo, la atmósfera, las interacciones físicas y las cualidades cinematográficas especificadas. No añadas ningún preámbulo, explicación o formato markdown; solo devuelve el prompt final, listo para la cámara. Tu respuesta final DEBE estar en ${responseLanguage}.`;
+  const systemInstructionES = `Eres un experto director de fotografía e ingeniero de prompts para modelos avanzados de IA de texto a video como Sora. Tu tarea es interpretar un 'guion de rodaje' estructurado que contiene una descripción de la escena, personajes, diseño de sonido, física, información de consentimiento, estilos de animación y una lista de tomas detallada con restricciones y géneros específicos. Sintetiza toda esta información en un único párrafo cohesivo y vívido. El prompt final debe ser rico en detalles descriptivos, capturando el estado de ánimo, la atmósfera, las interacciones físicas y las cualidades cinematográficas especificadas. No añadas ningún preámbulo, explicación o formato markdown; solo devuelve el prompt final, listo para la cámara. Tu respuesta final DEBE estar en ${responseLanguage}.`;
 
   const systemInstruction = language === 'es' ? systemInstructionES : systemInstructionEN;
 
@@ -163,7 +185,7 @@ export const getSuggestions = async (data: SceneData, language: string, thinking
 
 
 const parameterProperties = Object.keys(PROMPT_OPTIONS).reduce((acc, key) => {
-  if (key !== 'cameraAnimation') { // Exclude cameraAnimation from per-shot parameters
+  if (key !== 'cameraAnimation' && !['animationStyle', 'characterDesign', 'backgroundStyle', 'renderingStyle', 'frameRate'].includes(key)) {
     acc[key as keyof PromptParameters] = { type: Type.STRING, description: `The ${key} for the shot.` };
   }
   return acc;
@@ -213,15 +235,27 @@ const deconstructionSchema = {
             properties: {
                 dialogue: { type: Type.STRING, description: "Any spoken dialogue." },
                 soundEffects: { type: Type.STRING, description: "Specific sound effects mentioned (e.g., 'rain hitting pavement')." },
+                sfxStyle: { type: Type.STRING, description: "The overall style of the sound effects (e.g., 'realistic', 'cartoonish')." },
                 music: { type: Type.STRING, description: "Description of the score or ambient music." },
+                musicStyle: { type: Type.STRING, description: "The overall style of the music (e.g., 'orchestral-score', 'synthesizer')." },
             },
         },
         physics: {
             type: Type.OBJECT,
             properties: {
-                weightAndRigidity: { type: Type.STRING, description: "Descriptions of object weight, stiffness, or physical properties." },
-                materialInteractions: { type: Type.STRING, description: "How materials interact (e.g., 'glass shattering')." },
-                environmentalForces: { type: Type.STRING, description: "Forces like wind, gravity, etc." },
+                weightAndRigidity: { type: Type.STRING, description: "Descriptions of object weight, stiffness, or physical properties (e.g., 'normal-gravity', 'low-gravity')." },
+                materialInteractions: { type: Type.STRING, description: "How materials interact (e.g., 'realistic', 'brittle')." },
+                environmentalForces: { type: Type.STRING, description: "Forces like wind, gravity, etc. (e.g., 'none', 'strong-wind')." },
+            },
+        },
+        animation: {
+            type: Type.OBJECT,
+            properties: {
+                animationStyle: { type: Type.STRING, description: "The overall animation style (e.g., '2d-traditional', '3d-cgi')." },
+                characterDesign: { type: Type.STRING, description: "The design style of characters (e.g., 'pixar-style', '90s-anime-style')." },
+                backgroundStyle: { type: Type.STRING, description: "The style of the backgrounds (e.g., 'watercolor', 'matte-painting')." },
+                renderingStyle: { type: Type.STRING, description: "The final rendering look (e.g., 'cel-shaded', 'claymation')." },
+                frameRate: { type: Type.STRING, description: "The animation frame rate (e.g., 'on-twos-12fps', 'smooth-24fps')." },
             },
         },
         cameraEffects: {
@@ -241,7 +275,7 @@ const deconstructionSchema = {
             description: "The aspect ratio, e.g., '16:9', '9:16'. Default to '16:9' if not specified.",
         },
     },
-    required: ["sceneDescription", "shots", "cameos", "audio", "physics", "cameraEffects", "aspectRatio"],
+    required: ["sceneDescription", "shots", "cameos", "audio", "physics", "animation", "cameraEffects", "aspectRatio"],
 };
 
 
@@ -263,7 +297,7 @@ Key Instructions:
 1.  **sceneDescription**: Create a comprehensive summary of the entire prompt's theme, mood, and setting.
 2.  **shots**: This is critical. Identify distinct moments or camera perspectives in the prompt and treat each as a separate shot object in the array. If the prompt describes one continuous action, create a single shot.
 3.  **parameters**: For each shot, meticulously fill in the parameter fields. Infer values where possible (e.g., a "dark alley" implies 'low-key' lighting). For each parameter, you MUST choose the closest valid option from the lists provided below. Do not invent new values. If a parameter is not mentioned and cannot be inferred, use a sensible default (e.g., 'medium-shot', 'eye-level', 'none').
-4.  **audio & physics**: Extract any mention of sounds, music, dialogue, or physical interactions and place them in the appropriate fields.
+4.  **audio & physics & animation**: Extract any mention of sounds, music, dialogue, physical interactions, or animation styles and place them in the appropriate fields.
 5.  **aspectRatio**: Infer if possible (e.g., "vertical video" -> "9:16"). If not specified, default to "16:9".
 6.  **cameos & cameoDescription**: List any named characters or people in 'cameos', and describe their appearance or role in 'cameoDescription'.
 
@@ -290,7 +324,22 @@ ${validOptionsString}
         const validatedData: SceneData = {
             cameoConsent: !!parsedJson.cameos, // Assume consent if cameos are extracted
             ...parsedJson,
+            audio: {
+                dialogue: '',
+                soundEffects: '',
+                sfxStyle: 'none',
+                music: '',
+                musicStyle: 'none',
+                ...parsedJson.audio,
+            },
+            physics: {
+                weightAndRigidity: 'normal-gravity',
+                materialInteractions: 'realistic',
+                environmentalForces: 'none',
+                ...parsedJson.physics,
+            },
             cameoDescription: parsedJson.cameoDescription || '',
+            animation: parsedJson.animation || { animationStyle: 'none', characterDesign: 'none', backgroundStyle: 'none', renderingStyle: 'none', frameRate: 'none' },
             shots: parsedJson.shots?.map((shot: any) => ({
                 id: Date.now().toString() + Math.random(),
                 ...shot,

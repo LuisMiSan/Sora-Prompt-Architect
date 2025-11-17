@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData } from '../types';
+import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData, AnimationData } from '../types';
 import { PROMPT_OPTIONS, initialParameters, ASPECT_RATIO_OPTIONS } from '../constants';
 import { SceneData } from '../App';
 import { getSuggestions, deconstructPrompt } from '../services/geminiService';
@@ -107,15 +107,25 @@ const defaultShot = (): Shot => ({
 });
 
 const initialPhysics: PhysicsData = {
-  weightAndRigidity: '',
-  materialInteractions: '',
-  environmentalForces: '',
+  weightAndRigidity: 'normal-gravity',
+  materialInteractions: 'realistic',
+  environmentalForces: 'none',
 };
 
 const initialAudio: AudioData = {
   dialogue: '',
   soundEffects: '',
+  sfxStyle: 'none',
   music: '',
+  musicStyle: 'none',
+};
+
+const initialAnimationData: AnimationData = {
+  animationStyle: 'none',
+  characterDesign: 'none',
+  backgroundStyle: 'none',
+  renderingStyle: 'none',
+  frameRate: 'none',
 };
 
 const initialCameraEffects: CameraEffectsData = {
@@ -165,13 +175,13 @@ const ShotEditor: React.FC<{
         rows={3}
         className={textAreaBaseClasses}
       />
-      <input
-        type="text"
+      <textarea
         name="constraints"
         placeholder={t('shotEditor.constraintsPlaceholder')}
         value={shot.constraints}
         onChange={handleInputChange}
-        className={inputBaseClasses}
+        rows={2}
+        className={textAreaBaseClasses}
       />
       <div className="bg-white rounded-lg border border-brand-border">
         <div className="flex border-b border-brand-border px-2 overflow-x-auto">
@@ -325,6 +335,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const [cameoConsent, setCameoConsent] = useState(false);
   const [physics, setPhysics] = useState<PhysicsData>(initialPhysics);
   const [audio, setAudio] = useState<AudioData>(initialAudio);
+  const [animation, setAnimation] = useState<AnimationData>(initialAnimationData);
   const [cameraEffects, setCameraEffects] = useState<CameraEffectsData>(initialCameraEffects);
   const [aspectRatio, setAspectRatio] = useState('16:9');
   
@@ -413,6 +424,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       setCameoDescription(initialData.cameoDescription || '');
       setAudio(initialData.audio || initialAudio);
       setPhysics(initialData.physics || initialPhysics);
+      setAnimation(initialData.animation || initialAnimationData);
       setCameraEffects({ ...initialCameraEffects, ...initialData.cameraEffects });
       setAspectRatio(initialData.aspectRatio || '16:9');
       setCameoConsent(initialData.cameoConsent || false);
@@ -427,6 +439,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     setCameoConsent(false);
     setAudio(initialAudio);
     setPhysics(initialPhysics);
+    setAnimation(initialAnimationData);
     setCameraEffects(initialCameraEffects);
     setAspectRatio('16:9');
     setSuggestions(null);
@@ -465,7 +478,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     setSuggestions(null);
     setSuggestionError(null);
     try {
-        const result = await getSuggestions({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent }, language, thinkingMode);
+        const result = await getSuggestions({ sceneDescription, shots, cameos, cameoDescription, audio, physics, animation, cameraEffects, aspectRatio, cameoConsent }, language, thinkingMode);
         setSuggestions(result);
     } catch (e) {
         setSuggestionError(t('promptForm.error.suggestionsFailed'));
@@ -477,7 +490,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (sceneDescription.trim()) {
-      onGenerate({ sceneDescription, shots, cameos, cameoDescription, audio, physics, cameraEffects, aspectRatio, cameoConsent });
+      onGenerate({ sceneDescription, shots, cameos, cameoDescription, audio, physics, animation, cameraEffects, aspectRatio, cameoConsent });
     }
   };
 
@@ -694,36 +707,145 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
             </div>
        </div>
 
+      <AdvancedPanel title={t('animationSettings.title')}>
+        <p className="text-sm text-brand-text-secondary -mt-2 mb-6">{t('animationSettings.description')}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+                <label htmlFor="animationStyle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('animationSettings.animationStyle')}
+                </label>
+                <select
+                    id="animationStyle"
+                    value={animation.animationStyle}
+                    onChange={(e) => setAnimation(prev => ({...prev, animationStyle: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.animationStyle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.animationStyle.${option.labelKey.split('.')[1]}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="characterDesign" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('animationSettings.characterDesign')}
+                </label>
+                <select
+                    id="characterDesign"
+                    value={animation.characterDesign}
+                    onChange={(e) => setAnimation(prev => ({...prev, characterDesign: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.characterDesign.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.characterDesign.${option.labelKey.split('.')[1]}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label htmlFor="backgroundStyle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('animationSettings.backgroundStyle')}
+                </label>
+                <select
+                    id="backgroundStyle"
+                    value={animation.backgroundStyle}
+                    onChange={(e) => setAnimation(prev => ({...prev, backgroundStyle: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.backgroundStyle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.backgroundStyle.${option.labelKey.split('.')[1]}`)}</option>
+                    ))}
+                </select>
+            </div>
+             <div>
+                <label htmlFor="renderingStyle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('animationSettings.renderingStyle')}
+                </label>
+                <select
+                    id="renderingStyle"
+                    value={animation.renderingStyle}
+                    onChange={(e) => setAnimation(prev => ({...prev, renderingStyle: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.renderingStyle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.renderingStyle.${option.labelKey.split('.')[1]}`)}</option>
+                    ))}
+                </select>
+            </div>
+            <div className='lg:col-span-2'>
+                <label htmlFor="frameRate" className="block text-xs font-medium text-brand-text-secondary mb-1.5">
+                    {t('animationSettings.frameRate')}
+                </label>
+                <select
+                    id="frameRate"
+                    value={animation.frameRate}
+                    onChange={(e) => setAnimation(prev => ({...prev, frameRate: e.target.value}))}
+                    className={inputBaseClasses}
+                >
+                    {PROMPT_OPTIONS.frameRate.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.frameRate.${option.labelKey.split('.')[1]}`)}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
+      </AdvancedPanel>
+
       <AdvancedPanel title={t('advancedSettings.title')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <h4 className="text-sm font-semibold text-brand-text-secondary border-b border-brand-border pb-2">{t('advancedSettings.physicsEngine')}</h4>
-            <div>
-              <label htmlFor="weightAndRigidity" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.weightAndRigidity')}</label>
-              <textarea id="weightAndRigidity" value={physics.weightAndRigidity} onChange={(e) => setPhysics(prev => ({...prev, weightAndRigidity: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.weightAndRigidityPlaceholder')} />
+             <div>
+                <label htmlFor="weightAndRigidity" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('promptOptions.labels.weightAndRigidity')}</label>
+                <select id="weightAndRigidity" value={physics.weightAndRigidity} onChange={(e) => setPhysics(prev => ({...prev, weightAndRigidity: e.target.value}))} className={inputBaseClasses}>
+                    {PROMPT_OPTIONS.weightAndRigidity.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
             </div>
             <div>
-              <label htmlFor="materialInteractions" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.materialInteractions')}</label>
-              <textarea id="materialInteractions" value={physics.materialInteractions} onChange={(e) => setPhysics(prev => ({...prev, materialInteractions: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.materialInteractionsPlaceholder')} />
+                <label htmlFor="materialInteractions" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('promptOptions.labels.materialInteractions')}</label>
+                 <select id="materialInteractions" value={physics.materialInteractions} onChange={(e) => setPhysics(prev => ({...prev, materialInteractions: e.target.value}))} className={inputBaseClasses}>
+                    {PROMPT_OPTIONS.materialInteractions.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
             </div>
             <div>
-              <label htmlFor="environmentalForces" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.environmentalForces')}</label>
-              <textarea id="environmentalForces" value={physics.environmentalForces} onChange={(e) => setPhysics(prev => ({...prev, environmentalForces: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.environmentalForcesPlaceholder')} />
+                <label htmlFor="environmentalForces" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('promptOptions.labels.environmentalForces')}</label>
+                 <select id="environmentalForces" value={physics.environmentalForces} onChange={(e) => setPhysics(prev => ({...prev, environmentalForces: e.target.value}))} className={inputBaseClasses}>
+                    {PROMPT_OPTIONS.environmentalForces.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
             </div>
           </div>
           <div className="space-y-4">
              <h4 className="text-sm font-semibold text-brand-text-secondary border-b border-brand-border pb-2">{t('advancedSettings.soundscape')}</h4>
              <div>
               <label htmlFor="dialogue" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.dialogue')}</label>
-              <textarea id="dialogue" value={audio.dialogue} onChange={(e) => setAudio(prev => ({...prev, dialogue: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.dialoguePlaceholder')} />
+              <textarea id="dialogue" value={audio.dialogue} onChange={(e) => setAudio(prev => ({...prev, dialogue: e.target.value}))} rows={1} className={textAreaBaseClasses} placeholder={t('advancedSettings.dialoguePlaceholder')} />
+            </div>
+            <div>
+                <label htmlFor="sfxStyle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.sfxStyle')}</label>
+                 <select id="sfxStyle" value={audio.sfxStyle} onChange={(e) => setAudio(prev => ({...prev, sfxStyle: e.target.value}))} className={inputBaseClasses}>
+                    {PROMPT_OPTIONS.sfxStyle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
             </div>
             <div>
               <label htmlFor="soundEffects" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.sfx')}</label>
-              <textarea id="soundEffects" value={audio.soundEffects} onChange={(e) => setAudio(prev => ({...prev, soundEffects: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.sfxPlaceholder')} />
+              <textarea id="soundEffects" value={audio.soundEffects} onChange={(e) => setAudio(prev => ({...prev, soundEffects: e.target.value}))} rows={1} className={textAreaBaseClasses} placeholder={t('advancedSettings.sfxPlaceholder')} />
+            </div>
+             <div>
+                 <label htmlFor="musicStyle" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.musicStyle')}</label>
+                 <select id="musicStyle" value={audio.musicStyle} onChange={(e) => setAudio(prev => ({...prev, musicStyle: e.target.value}))} className={inputBaseClasses}>
+                    {PROMPT_OPTIONS.musicStyle.map(option => (
+                        <option key={option.value} value={option.value}>{t(`promptOptions.${option.labelKey}`)}</option>
+                    ))}
+                </select>
             </div>
             <div>
               <label htmlFor="music" className="block text-xs font-medium text-brand-text-secondary mb-1.5">{t('advancedSettings.music')}</label>
-              <textarea id="music" value={audio.music} onChange={(e) => setAudio(prev => ({...prev, music: e.target.value}))} rows={2} className={textAreaBaseClasses} placeholder={t('advancedSettings.musicPlaceholder')} />
+              <textarea id="music" value={audio.music} onChange={(e) => setAudio(prev => ({...prev, music: e.target.value}))} rows={1} className={textAreaBaseClasses} placeholder={t('advancedSettings.musicPlaceholder')} />
             </div>
           </div>
         </div>
@@ -849,7 +971,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
             </button>
             <button type="button" onClick={() => setShotListView('storyboard')} className={`px-2 py-1 rounded-md transition-all ${shotListView === 'storyboard' ? 'bg-brand-accent-to text-white' : 'hover:bg-brand-surface'}`} title={t('shotEditor.storyboardView')}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2-2H4a2 2 0 01-2-2v-4z" /></svg>
             </button>
           </div>
         </div>

@@ -97,22 +97,30 @@
       "context": "🌍 Context"
     }
   },
+  "animationSettings": {
+    "title": "🎨 Animation & Style",
+    "description": "Define the specific animation style for your scene. These settings work best when the main 'Style' parameter is also set to an animation type.",
+    "animationStyle": "Overall Animation Style",
+    "characterDesign": "Character Design Style",
+    "backgroundStyle": "Background Style",
+    "renderingStyle": "Rendering Style",
+    "frameRate": "Frame Rate"
+  },
   "advancedSettings": {
     "title": "🔬 Advanced Physics & Audio",
     "physicsEngine": "Physics Engine",
     "weightAndRigidity": "Object Weight & Rigidity",
-    "weightAndRigidityPlaceholder": "e.g., Objects have significant weight; fabrics are stiff.",
     "materialInteractions": "Material Properties & Interactions",
-    "materialInteractionsPlaceholder": "e.g., Heavy raindrops splash realistically; glass shatters into fine pieces.",
     "environmentalForces": "Environmental Forces",
-    "environmentalForcesPlaceholder": "e.g., Low gravity; strong winds affect character movement.",
     "soundscape": "Soundscape",
     "dialogue": "Dialogue Details",
     "dialoguePlaceholder": "e.g., A character whispers, 'I've been waiting...'",
     "sfx": "Specific Sound Effects (SFX)",
     "sfxPlaceholder": "e.g., Sizzling rain, distant sirens, the crackle of a neon sign.",
     "music": "Ambient Music & Cues",
-    "musicPlaceholder": "e.g., A low, tense synthesizer score swells; music cuts out on impact."
+    "musicPlaceholder": "e.g., A low, tense synthesizer score swells; music cuts out on impact.",
+    "musicStyle": "Overall Music Style",
+    "sfxStyle": "Overall SFX Style"
   },
   "cameraEffects": {
     "title": "🎥 Scene-Wide Camera & Composition",
@@ -176,6 +184,11 @@
   },
   "promptOptions": {
     "labels": {
+        "animationStyle": "Animation Style",
+        "characterDesign": "Character Design",
+        "backgroundStyle": "Background Style",
+        "renderingStyle": "Rendering Style",
+        "frameRate": "Frame Rate",
         "shotType": "Shot Type",
         "cameraAngle": "Camera Angle",
         "cameraMovement": "Camera Movement",
@@ -191,7 +204,93 @@
         "depthOfField": "Depth of Field",
         "texture": "Texture",
         "colorPalette": "Color Palette",
-        "genre": "Genre"
+        "genre": "Genre",
+        "weightAndRigidity": "Weight & Rigidity",
+        "materialInteractions": "Material Interactions",
+        "environmentalForces": "Environmental Forces",
+        "musicStyle": "Music Style",
+        "sfxStyle": "SFX Style"
+    },
+    "animationStyle": {
+        "none": "Not Specified",
+        "2dTraditional": "2D Traditional (Hand-drawn)",
+        "3dCgi": "3D CGI Animation",
+        "stopMotion": "Stop-motion",
+        "anime": "Anime",
+        "motionGraphics": "Motion Graphics",
+        "cutOut": "Cut-out Animation"
+    },
+    "characterDesign": {
+        "none": "Not Specified",
+        "pixar": "Pixar Style",
+        "ghibli": "Ghibli Style",
+        "looneyTunes": "Classic Looney Tunes",
+        "90sAnime": "90s Anime Style",
+        "calarts": "CalArts Style",
+        "southPark": "South Park Style",
+        "rickAndMorty": "Rick and Morty Style"
+    },
+    "backgroundStyle": {
+        "none": "Not Specified",
+        "watercolor": "Watercolor",
+        "mattePainting": "Matte Painting",
+        "ghibli": "Ghibli-style",
+        "vectorArt": "Vector Art",
+        "stylized3d": "Stylized 3D"
+    },
+    "renderingStyle": {
+        "none": "Not Specified",
+        "celShaded": "Cel-shaded",
+        "claymation": "Claymation",
+        "paperCutOut": "Paper Cut-out",
+        "glitchArt": "Glitch Art",
+        "rotoscoping": "Rotoscoping",
+        "pixelArt": "Pixel Art"
+    },
+    "frameRate": {
+        "none": "Not Specified",
+        "onTwos": "On Twos (12fps)",
+        "smooth": "Smooth (24fps)",
+        "variable": "Variable / Dynamic",
+        "low": "Low Frame Rate / Choppy"
+    },
+    "weightAndRigidity": {
+        "normal": "Normal Gravity / Realistic",
+        "lowGravity": "Low Gravity / Floating",
+        "highGravity": "High Gravity / Heavy",
+        "lightweight": "Lightweight & Floaty",
+        "heavy": "Extremely Heavy & Rigid"
+    },
+    "materialInteractions": {
+        "realistic": "Realistic Interactions",
+        "cartoonish": "Exaggerated / Cartoonish",
+        "brittle": "Brittle (shatters easily)",
+        "soft": "Soft & Bouncy",
+        "none": "Not Specified"
+    },
+    "environmentalForces": {
+        "none": "No Significant Forces",
+        "strongWind": "Strong Wind",
+        "gentleBreeze": "Gentle Breeze",
+        "underwater": "Underwater Currents",
+        "magnetic": "Magnetic Forces"
+    },
+    "musicStyle": {
+        "none": "Not Specified",
+        "orchestral": "Orchestral Score",
+        "synth": "Synthesizer / Electronic",
+        "lofi": "Lo-fi Hip Hop",
+        "ambient": "Ambient",
+        "rock": "Rock Anthem",
+        "jazz": "Jazz"
+    },
+    "sfxStyle": {
+        "none": "Not Specified",
+        "realistic": "Realistic",
+        "cinematic": "Cinematic / Impactful",
+        "cartoon": "Cartoonish (Boinks, Zaps)",
+        "scifi": "Sci-Fi (Hums, Beeps)",
+        "fantasy": "Fantasy (Magical)"
     },
     "aspectRatio": {
         "widescreen": "16:9 (Widescreen)",

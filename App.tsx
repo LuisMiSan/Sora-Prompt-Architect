@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion } from './types';
+import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion, AnimationData } from './types';
 import { generatePrompt, generateVideo, getVideosOperationStatus } from './services/geminiService';
 import Header from './components/Header';
 import PromptForm from './components/PromptForm';
@@ -195,8 +195,9 @@ const App: React.FC = () => {
   const handleRemixPrompt = useCallback((promptId: string, version: PromptVersion) => {
     setPromptToRemix({
       sceneDescription: version.sceneDescription, shots: version.shots, cameos: version.cameos, cameoDescription: version.cameoDescription || '',
-      audio: version.audio || { dialogue: '', soundEffects: '', music: '' },
-      physics: version.physics || { weightAndRigidity: '', materialInteractions: '', environmentalForces: '' },
+      audio: version.audio || { dialogue: '', soundEffects: '', sfxStyle: 'none', music: '', musicStyle: 'none' },
+      physics: version.physics || { weightAndRigidity: 'normal-gravity', materialInteractions: 'realistic', environmentalForces: 'none' },
+      animation: version.animation || { animationStyle: 'none', characterDesign: 'none', backgroundStyle: 'none', renderingStyle: 'none', frameRate: 'none' },
       cameraEffects: version.cameraEffects || { depthOfField: 'natural', cameraMovement: 'none', cameraAnimation: 'none' },
       aspectRatio: version.aspectRatio || '16:9', cameoConsent: version.cameoConsent || false,
     });

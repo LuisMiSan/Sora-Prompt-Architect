@@ -34,7 +34,9 @@ export interface PhysicsData {
 export interface AudioData {
   dialogue: string;
   soundEffects: string;
+  sfxStyle: string;
   music: string;
+  musicStyle: string;
 }
 
 export interface CameraEffectsData {
@@ -47,6 +49,14 @@ export interface CameraEffectsData {
   composition?: string;
 }
 
+export interface AnimationData {
+  animationStyle: string;
+  characterDesign: string;
+  backgroundStyle: string;
+  renderingStyle: string;
+  frameRate: string;
+}
+
 export interface PromptData {
   sceneDescription: string;
   shots: Shot[];
@@ -54,6 +64,7 @@ export interface PromptData {
   cameoDescription: string;
   audio: AudioData;
   physics: PhysicsData;
+  animation: AnimationData;
   cameraEffects?: CameraEffectsData;
   aspectRatio: string;
   cameoConsent: boolean;
