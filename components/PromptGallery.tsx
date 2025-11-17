@@ -34,7 +34,7 @@ const VersionHistoryModal: React.FC<{
         </div>
         <div className="overflow-y-auto p-4 space-y-4">
           {prompt.versions.map((version, index) => (
-            <div key={version.createdAt} className="bg-slate-50 p-4 rounded-lg border border-brand-border">
+            <div key={version.createdAt} className="bg-brand-bg p-4 rounded-lg border border-brand-border">
               <div className="flex justify-between items-start mb-3 gap-4">
                 <div>
                   <p className="text-sm text-brand-text-secondary">
@@ -104,7 +104,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                          <button
                             onClick={() => onToggleVisibility(prompt.id)}
                             title={t(`gallery.visibilityTooltip.${prompt.visibility === 'public' ? 'makePrivate' : 'makePublic'}`)}
-                            className={`text-xs px-2 py-0.5 rounded-full font-semibold transition-colors ${prompt.visibility === 'public' ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-slate-100 text-slate-800 hover:bg-slate-200'}`}
+                            className={`text-xs px-2 py-0.5 rounded-full font-semibold transition-colors ${prompt.visibility === 'public' ? 'bg-green-950/80 text-green-300 hover:bg-green-900' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                          >
                             {t(`gallery.visibility.${prompt.visibility}`)}
                          </button>
@@ -112,7 +112,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                 </div>
 
                 {latestVersion.versionNotes && (
-                  <div className="p-3 bg-slate-50 rounded-lg border border-brand-border">
+                  <div className="p-3 bg-brand-bg rounded-lg border border-brand-border">
                     <p className="text-xs text-brand-text-secondary font-semibold">{t('gallery.versionNotes')}</p>
                     <p className="text-sm text-brand-text-primary italic">"{latestVersion.versionNotes}"</p>
                   </div>
@@ -128,7 +128,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                      {latestVersion.aspectRatio && (
                         <p>
                             <span className="font-semibold">{t('gallery.format')}</span>
-                            <span className="ml-1.5 inline-block bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-xs">
+                            <span className="ml-1.5 inline-block bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full text-xs">
                                 {latestVersion.aspectRatio}
                             </span>
                         </p>
@@ -136,7 +136,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                      {latestVersion.cameos && latestVersion.cameoConsent && (
                          <p className="flex items-center">
                             <span className="font-semibold">{t('gallery.cameoConsent')}</span>
-                            <span className="ml-1.5 flex items-center gap-1 text-green-600">
+                            <span className="ml-1.5 flex items-center gap-1 text-green-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
                                 {t('gallery.acknowledged')}
                             </span>
@@ -150,7 +150,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                 <div className="flex gap-2">
                     <button
                         onClick={() => setHistoryModalPrompt(prompt)}
-                        className="p-2 bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors"
+                        className="p-2 bg-brand-ui-bg hover:bg-slate-600 border border-brand-border rounded-lg transition-colors"
                         title={t('gallery.history')}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg>
@@ -164,7 +164,7 @@ const PromptGallery: React.FC<PromptGalleryProps> = ({ prompts, onRemix, onDelet
                     </button>
                     <button
                     onClick={() => onDelete(prompt.id)}
-                    className="p-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+                    className="p-2 bg-red-950/80 hover:bg-red-900 text-red-400 rounded-lg transition-colors"
                     title={t('gallery.deleteScene')}
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>

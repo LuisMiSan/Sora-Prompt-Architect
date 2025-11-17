@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -6,7 +7,7 @@ const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg border border-brand-border">
+    <div className="flex items-center gap-1 bg-brand-bg/50 p-1 rounded-lg border border-brand-border">
       <button
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 text-sm font-semibold rounded-md transition-all ${

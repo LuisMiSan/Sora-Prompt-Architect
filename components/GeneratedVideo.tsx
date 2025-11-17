@@ -18,7 +18,7 @@ const GeneratedVideo: React.FC<GeneratedVideoProps> = ({ isLoading, progressMess
             </h2>
             
             {error && (
-                <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg">
+                <div className="bg-red-950/80 border-l-4 border-red-600 text-red-300 p-4 rounded-r-lg">
                     <p>{error}</p>
                 </div>
             )}

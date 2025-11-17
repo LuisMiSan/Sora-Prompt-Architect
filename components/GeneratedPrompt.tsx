@@ -57,14 +57,14 @@ const GeneratedPrompt: React.FC<GeneratedPromptProps> = ({ prompt, onSave, canSa
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <button
               onClick={handleCopy}
-              className="sm:col-span-1 flex items-center justify-center gap-2 bg-white hover:bg-slate-100 border border-brand-border text-brand-text-primary font-semibold py-2.5 px-4 rounded-lg transition-colors"
+              className="sm:col-span-1 flex items-center justify-center gap-2 bg-brand-ui-bg hover:bg-slate-600 border border-brand-border text-brand-text-primary font-semibold py-2.5 px-4 rounded-lg transition-colors"
             >
               {copied ? t('buttons.copied') : t('buttons.copy')}
             </button>
             <button
               onClick={handleSave}
               disabled={!canSave}
-              className="sm:col-span-1 flex items-center justify-center gap-2 bg-white hover:bg-slate-100 border border-brand-border text-brand-text-primary font-semibold py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="sm:col-span-1 flex items-center justify-center gap-2 bg-brand-ui-bg hover:bg-slate-600 border border-brand-border text-brand-text-primary font-semibold py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               title={!canSave ? t('generatedPrompt.saveDisabledTooltip') : ''}
             >
               {t('buttons.save')}

@@ -76,8 +76,8 @@ const ImportPromptModal: React.FC<{
                     />
                     {error && <p className="text-red-400 text-sm">{error}</p>}
                 </div>
-                 <div className="flex justify-end gap-3 p-4 bg-slate-50 border-t border-brand-border rounded-b-2xl">
-                    <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold">
+                 <div className="flex justify-end gap-3 p-4 bg-brand-bg border-t border-brand-border rounded-b-2xl">
+                    <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-brand-ui-bg hover:bg-slate-600 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold">
                         {t('promptForm.import.cancel')}
                     </button>
                     <button 
@@ -183,7 +183,7 @@ const ShotEditor: React.FC<{
         rows={2}
         className={textAreaBaseClasses}
       />
-      <div className="bg-white rounded-lg border border-brand-border">
+      <div className="bg-brand-surface rounded-lg border border-brand-border">
         <div className="flex border-b border-brand-border px-2 overflow-x-auto">
           {Object.keys(parameterGroups).map(groupName => (
             <button
@@ -241,7 +241,7 @@ const ShotEditorPanel: React.FC<{
   const [isOpen, setIsOpen] = useState(true);
   
   return (
-    <div className="bg-slate-50 border border-brand-border rounded-2xl p-4">
+    <div className="bg-brand-bg border border-brand-border rounded-2xl p-4">
       <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <h4 className="font-bold text-lg text-brand-text-primary">
           {t('shotEditor.title', { index: index + 1 })}
@@ -273,7 +273,7 @@ const AdvancedPanel: React.FC<{
 }> = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-     <div className="bg-slate-50 border border-brand-border rounded-2xl">
+     <div className="bg-brand-bg border border-brand-border rounded-2xl">
       <button
         type="button"
         className="w-full flex justify-between items-center p-4 text-left"
@@ -313,7 +313,7 @@ const ShotEditorModal: React.FC<{
                 <div className="overflow-y-auto p-6">
                     <ShotEditor shot={shot} onUpdate={onUpdate} isModal />
                 </div>
-                 <div className="flex justify-end p-4 bg-slate-50 border-t border-brand-border rounded-b-2xl">
+                 <div className="flex justify-end p-4 bg-brand-bg border-t border-brand-border rounded-b-2xl">
                     <button onClick={onClose} type="button" className="px-5 py-2 text-sm bg-gradient-to-r from-brand-accent-from to-brand-accent-to hover:shadow-glow text-white font-semibold rounded-lg transition-all duration-300">
                         {t('shotEditor.closeButton')}
                     </button>
@@ -507,7 +507,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     }, [shot.parameters, t]);
 
     return (
-        <div className="flex-shrink-0 w-80 bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+        <div className="flex-shrink-0 w-80 bg-brand-bg border border-brand-border rounded-2xl p-4 space-y-3 flex flex-col justify-between">
             <div>
                 <div className="flex justify-between items-center mb-2">
                     <h4 className="font-bold text-md text-brand-text-primary">{t('shotEditor.title', { index: index + 1 })}</h4>
@@ -518,11 +518,11 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                 <p className="text-sm text-brand-text-secondary line-clamp-3 h-16">{shot.description || t('shotEditor.noDescription')}</p>
                 <div className="mt-2 space-y-1">
                   {keyParams.map((param, i) => (
-                    <span key={i} className="inline-block bg-white border border-brand-border text-brand-text-secondary text-xs font-medium mr-2 mb-1 px-2.5 py-0.5 rounded-full">{param}</span>
+                    <span key={i} className="inline-block bg-brand-surface border border-brand-border text-brand-text-secondary text-xs font-medium mr-2 mb-1 px-2.5 py-0.5 rounded-full">{param}</span>
                   ))}
                 </div>
             </div>
-            <button type="button" onClick={onEdit} className="w-full mt-3 bg-white hover:bg-slate-100 border border-brand-border font-semibold text-brand-text-primary py-2 rounded-lg transition-colors">
+            <button type="button" onClick={onEdit} className="w-full mt-3 bg-brand-surface hover:bg-slate-700 border border-brand-border font-semibold text-brand-text-primary py-2 rounded-lg transition-colors">
                 {t('shotEditor.editButton')}
             </button>
         </div>
@@ -531,7 +531,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
     
   const AddShotCard: React.FC<{ onClick: () => void }> = ({ onClick }) => (
     <div className="flex-shrink-0 w-80 flex items-center justify-center">
-        <button type="button" onClick={onClick} className="w-full h-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors">
+        <button type="button" onClick={onClick} className="w-full h-full flex items-center justify-center gap-2 text-center bg-brand-surface hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors">
             {t('promptForm.addShot')}
         </button>
     </div>
@@ -563,7 +563,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
             <button
                 type="button"
                 onClick={() => setIsImportModalOpen(true)}
-                className="px-3 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors flex items-center gap-2 text-brand-text-primary font-semibold"
+                className="px-3 py-2 text-sm bg-brand-ui-bg hover:bg-slate-600 border border-brand-border rounded-lg transition-colors flex items-center gap-2 text-brand-text-primary font-semibold"
                 title={t('promptForm.import.tooltip')}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011 1v2.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L8 6.586V4a1 1 0 011-1z" /><path d="M10 12a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" /></svg>
@@ -573,7 +573,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                 <button
                 type="button"
                 onClick={handleReset}
-                className="px-3 py-2 text-sm bg-white hover:bg-slate-100 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold"
+                className="px-3 py-2 text-sm bg-brand-ui-bg hover:bg-slate-600 border border-brand-border rounded-lg transition-colors text-brand-text-primary font-semibold"
                 >
                 {t('promptForm.startNew')}
                 </button>
@@ -586,12 +586,12 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         </div>
       )}
       {isImported && (
-        <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg text-sm text-blue-700">
+        <div className="bg-blue-950/70 border border-blue-700 p-3 rounded-lg text-sm text-blue-300">
           {t('promptForm.importedMessage')}
         </div>
       )}
       
-      <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
+      <div className="bg-brand-bg border border-brand-border rounded-2xl p-4 space-y-4">
         <div>
             <label htmlFor="sceneDescription" className="block text-sm font-medium text-brand-text-secondary mb-2">
             {t('promptForm.sceneDescriptionLabel')}
@@ -614,7 +614,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                     className={`absolute bottom-2.5 right-2.5 p-2 rounded-full transition-all duration-200 ${
                         isListening 
                         ? 'bg-red-500 text-white animate-pulse-fast' 
-                        : 'bg-brand-ui-bg hover:bg-slate-200 text-brand-text-secondary'
+                        : 'bg-brand-ui-bg hover:bg-slate-600 text-brand-text-secondary'
                     }`}
                     title={isListening ? t('buttons.stopRecording') : t('buttons.startRecording')}
                   >
@@ -645,7 +645,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       </div>
 
 
-       <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-4">
+       <div className="bg-brand-bg border border-brand-border rounded-2xl p-4 space-y-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <label htmlFor="cameos" className="block text-sm font-medium text-brand-text-secondary">
@@ -690,7 +690,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                 </div>
 
                 <div>
-                    <label htmlFor="cameoDescription" className={`block text-sm font-medium mb-2 transition-colors ${cameoConsent ? 'text-brand-text-secondary' : 'text-gray-400'}`}>
+                    <label htmlFor="cameoDescription" className={`block text-sm font-medium mb-2 transition-colors ${cameoConsent ? 'text-brand-text-secondary' : 'text-slate-500'}`}>
                         {t('promptForm.cameoDescriptionLabel')}
                     </label>
                     <textarea
@@ -698,7 +698,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
                         value={cameoDescription}
                         onChange={(e) => setCameoDescription(e.target.value)}
                         rows={2}
-                        className={`${textAreaBaseClasses} disabled:bg-slate-200/50 disabled:cursor-not-allowed`}
+                        className={`${textAreaBaseClasses} disabled:bg-slate-600/50 disabled:cursor-not-allowed`}
                         placeholder={t('promptForm.cameoDescriptionPlaceholder')}
                         disabled={!cameoConsent}
                         title={!cameoConsent ? t('promptForm.cameoDescriptionDisabledTooltip') : ''}
@@ -966,7 +966,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       <div>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-brand-text-primary">{t('shotEditor.shotListTitle')}</h3>
-          <div className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg border border-brand-border">
+          <div className="flex items-center gap-1 bg-brand-bg/50 p-1 rounded-lg border border-brand-border">
             <button type="button" onClick={() => setShotListView('list')} className={`px-2 py-1 rounded-md transition-all ${shotListView === 'list' ? 'bg-brand-accent-to text-white' : 'hover:bg-brand-surface'}`} title={t('shotEditor.listView')}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
             </button>
@@ -1002,7 +1002,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
         <button
             type="button"
             onClick={handleAddShot}
-            className="w-full flex items-center justify-center gap-2 text-center bg-white hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-2 text-center bg-brand-surface hover:bg-brand-accent-to/5 border-2 border-dashed border-brand-border hover:border-brand-accent-to text-brand-text-secondary hover:text-brand-accent-to font-semibold py-3 px-4 rounded-lg transition-colors"
             >
             {t('promptForm.addShot')}
         </button>
@@ -1010,10 +1010,10 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
 
 
        {(suggestions || isSuggesting || suggestionError) && (
-        <div className="bg-slate-50 border border-brand-border rounded-2xl p-4 space-y-3 animate-fade-in">
+        <div className="bg-brand-bg border border-brand-border rounded-2xl p-4 space-y-3 animate-fade-in">
           <div className="flex justify-between items-center">
             <h4 className="font-bold text-lg text-brand-text-primary">{t('promptForm.suggestions.title')}</h4>
-            <button type="button" onClick={() => { setSuggestions(null); setSuggestionError(null); }} className="text-gray-500 hover:text-brand-text-primary">&times;</button>
+            <button type="button" onClick={() => { setSuggestions(null); setSuggestionError(null); }} className="text-brand-text-secondary hover:text-brand-text-primary">&times;</button>
           </div>
           {isSuggesting && <p className="text-brand-text-secondary animate-pulse-fast">{t('promptForm.suggestions.loading')}</p>}
           {suggestionError && <p className="text-red-500">{suggestionError}</p>}
@@ -1025,7 +1025,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
               <button
                 type="button"
                 onClick={handleApplySuggestions}
-                className="w-full mt-4 flex items-center justify-center gap-2 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-800 font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full mt-4 flex items-center justify-center gap-2 bg-emerald-950/80 hover:bg-emerald-900/80 border border-emerald-700 text-emerald-300 font-semibold py-2 px-4 rounded-lg transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6a1 1 0 10-2 0v5.586L7.707 10.293zM3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
@@ -1038,12 +1038,12 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
        )}
 
       <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="relative group flex items-center justify-center bg-white border border-brand-border rounded-lg">
+        <div className="relative group flex items-center justify-center bg-brand-ui-bg border border-brand-border rounded-lg">
           <button
             type="button"
             onClick={handleGetSuggestions}
             disabled={isLoading || isSuggesting}
-            className="w-full flex items-center justify-center gap-2 text-brand-text-primary hover:bg-slate-100 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 text-brand-text-primary hover:bg-slate-600 font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSuggesting ? (
               <>
@@ -1082,7 +1082,7 @@ const PromptForm: React.FC<PromptFormProps> = ({ onGenerate, isLoading, initialD
       
        <div className="mt-6 border-t border-brand-border pt-6">
             <h4 className="font-semibold text-brand-text-secondary text-sm">{t('promptForm.guidelines.title')}</h4>
-            <ul className="list-disc list-inside text-xs text-gray-400 mt-2 space-y-1">
+            <ul className="list-disc list-inside text-xs text-slate-500 mt-2 space-y-1">
                 <li>{t('promptForm.guidelines.one')}</li>
                 <li>{t('promptForm.guidelines.two')}</li>
                 <li>{t('promptForm.guidelines.three')}</li>

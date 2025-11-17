@@ -257,8 +257,8 @@ const App: React.FC = () => {
           </div>
           <div className="lg:col-span-2 flex flex-col gap-8">
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-xl shadow-lg shadow-red-500/10 animate-fade-in">
-                <strong className="font-semibold text-red-800">Error:</strong> {error}
+              <div className="bg-red-950 border border-red-700 text-red-300 p-4 rounded-xl shadow-lg shadow-red-500/10 animate-fade-in">
+                <strong className="font-semibold text-red-200">Error:</strong> {error}
               </div>
             )}
             {generatedPrompt && (
