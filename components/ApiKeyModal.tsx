@@ -37,7 +37,7 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose, onSelectKey 
                         </a>
                     </p>
                 </div>
-                 <div className="flex justify-end p-4 bg-slate-50 border-t border-brand-border rounded-b-2xl">
+                 <div className="flex justify-end p-4 bg-brand-surface border-t border-brand-border rounded-b-2xl">
                     <button 
                         onClick={onSelectKey} 
                         type="button" 
