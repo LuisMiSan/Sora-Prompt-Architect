@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion, AnimationData } from './types';
+import { SavedPrompt, Shot, PhysicsData, AudioData, CameraEffectsData, PromptData, PromptVersion, AnimationData, SceneData } from './types';
 import { generatePrompt, generateVideo, getVideosOperationStatus } from './services/geminiService';
 import Header from './components/Header';
 import PromptForm from './components/PromptForm';
@@ -8,8 +8,6 @@ import PromptGallery from './components/PromptGallery';
 import ApiKeyModal from './components/ApiKeyModal';
 import GeneratedVideo from './components/GeneratedVideo';
 import { useLanguage } from './context/LanguageContext';
-
-export interface SceneData extends PromptData {}
 
 const QUERY_HISTORY_KEY = 'sora-query-history';
 

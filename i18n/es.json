@@ -102,7 +102,7 @@
     "description": "Define el estilo de animación específico para tu escena. Estos ajustes funcionan mejor cuando el parámetro principal de 'Estilo' también se establece en un tipo de animación.",
     "animationStyle": "Estilo General de Animación",
     "characterDesign": "Diseño de Personajes",
-    "backgroundStyle": "Estilo de Fondos",
+    "backgroundStyle": "Estilo de Fondo",
     "renderingStyle": "Estilo de Renderizado",
     "frameRate": "Velocidad de Fotogramas"
   },
@@ -203,7 +203,12 @@
       "stopMotion": "Stop-motion",
       "anime": "Anime",
       "motionGraphics": "Gráficos en Movimiento",
-      "cutOut": "Animación de Recortes"
+      "cutOut": "Animación de Recortes",
+      "claymation": "Plastimación (Claymation)",
+      "pixelArt": "Pixel Art",
+      "oilPainting": "Pintura al Óleo",
+      "charcoal": "Boceto al Carbón",
+      "comicBook": "Estilo Cómic / Novela Gráfica"
     },
     "characterDesign": {
       "none": "Sin especificar",

@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { en, es } from '../i18n/translations';
 
 interface LanguageContextType {
   language: string;
@@ -10,41 +11,18 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState(localStorage.getItem('sora-lang') || 'en');
-  const [translations, setTranslations] = useState<Record<string, any> | null>(null);
-
-  useEffect(() => {
-    const loadTranslations = async () => {
-      try {
-        const [enResponse, esResponse] = await Promise.all([
-          fetch('./i18n/en.json'),
-          fetch('./i18n/es.json')
-        ]);
-        if (!enResponse.ok || !esResponse.ok) {
-          throw new Error(`HTTP error! status: ${enResponse.status} ${esResponse.status}`);
-        }
-        const en = await enResponse.json();
-        const es = await esResponse.json();
-        setTranslations({ en, es });
-      } catch (error) {
-        console.error("Error loading translation files:", error);
-        setTranslations({ en: {}, es: {} }); // Set empty translations on error
-      }
-    };
-    loadTranslations();
-  }, []);
+  
+  // Initialize translations directly from imported objects
+  const translations: Record<string, any> = { en, es };
 
   const setLanguage = (lang: string) => {
-    if (translations && translations[lang]) {
+    if (translations[lang]) {
       localStorage.setItem('sora-lang', lang);
       setLanguageState(lang);
     }
   };
 
   const t = (key: string, replacements?: Record<string, string | number>): string => {
-    if (!translations) {
-      return key; // Return key if translations are not loaded yet
-    }
-      
     const currentTranslations = translations[language] || translations.en;
     const keys = key.split('.');
     let result = currentTranslations;
@@ -75,14 +53,6 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const value = { language, setLanguage, t };
-
-  if (!translations) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <p className="text-brand-text-primary text-lg animate-pulse">Loading Application...</p>
-      </div>
-    );
-  }
 
   return (
     <LanguageContext.Provider value={value}>

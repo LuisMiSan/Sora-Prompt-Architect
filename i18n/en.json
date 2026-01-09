@@ -218,7 +218,12 @@
         "stopMotion": "Stop-motion",
         "anime": "Anime",
         "motionGraphics": "Motion Graphics",
-        "cutOut": "Cut-out Animation"
+        "cutOut": "Cut-out Animation",
+        "claymation": "Claymation",
+        "pixelArt": "Pixel Art",
+        "oilPainting": "Oil Painting",
+        "charcoal": "Charcoal Sketch",
+        "comicBook": "Comic Book / Graphic Novel"
     },
     "characterDesign": {
         "none": "Not Specified",

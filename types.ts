@@ -81,3 +81,5 @@ export interface SavedPrompt {
   versions: PromptVersion[];
   visibility: 'public' | 'private';
 }
+
+export interface SceneData extends PromptData {}

@@ -37,6 +37,11 @@ export const PROMPT_OPTIONS = {
     { value: 'anime', labelKey: 'animationStyle.anime' },
     { value: 'motion-graphics', labelKey: 'animationStyle.motionGraphics' },
     { value: 'cut-out', labelKey: 'animationStyle.cutOut' },
+    { value: 'claymation', labelKey: 'animationStyle.claymation' },
+    { value: 'pixel-art', labelKey: 'animationStyle.pixelArt' },
+    { value: 'oil-painting', labelKey: 'animationStyle.oilPainting' },
+    { value: 'charcoal', labelKey: 'animationStyle.charcoal' },
+    { value: 'comic-book', labelKey: 'animationStyle.comicBook' },
   ],
   characterDesign: [
     { value: 'none', labelKey: 'characterDesign.none' },

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData, AnimationData } from '../types';
+import { PromptParameters, Shot, PhysicsData, AudioData, CameraEffectsData, AnimationData, SceneData } from '../types';
 import { PROMPT_OPTIONS, initialParameters, ASPECT_RATIO_OPTIONS } from '../constants';
-import { SceneData } from '../App';
 import { getSuggestions, deconstructPrompt } from '../services/geminiService';
 import { useLanguage } from '../context/LanguageContext';
 

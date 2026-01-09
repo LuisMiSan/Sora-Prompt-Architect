@@ -1,6 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Shot, PromptParameters } from '../types';
-import { SceneData } from "../App";
+import { Shot, PromptParameters, SceneData } from '../types';
 import { PROMPT_OPTIONS } from "../constants";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
