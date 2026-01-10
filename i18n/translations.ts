@@ -1,7 +1,7 @@
 
 export const en = {
   "header": {
-    "titleMain": "Sora",
+    "titleMain": "VIDEO",
     "titleSubtitle": "Prompt Architect"
   },
   "hero": {
@@ -370,8 +370,8 @@ export const en = {
 
 export const es = {
   "header": {
-    "titleMain": "Sora",
-    "titleSubtitle": "Arquitecto de Prompts"
+    "titleMain": "VIDEO",
+    "titleSubtitle": "Prompt Architect"
   },
   "hero": {
     "title": {

@@ -2,7 +2,14 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Shot, PromptParameters, SceneData } from '../types';
 import { PROMPT_OPTIONS } from "../constants";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Lazy initialization to avoid top-level side effects or env var issues during module load
+let aiInstance: GoogleGenAI | null = null;
+const getAi = () => {
+  if (!aiInstance) {
+    aiInstance = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+  return aiInstance;
+};
 
 function formatSceneForPrompt(data: SceneData): string {
   let formattedString = `SCENE DESCRIPTION: ${data.sceneDescription}\n`;
@@ -121,6 +128,7 @@ export const generatePrompt = async (data: SceneData, language: string): Promise
   const userPrompt = formattedScene;
   
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model,
       contents: userPrompt,
@@ -169,6 +177,7 @@ export const getSuggestions = async (data: SceneData, language: string, thinking
   config.systemInstruction = systemInstruction;
 
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model,
       contents: userPrompt,
@@ -305,6 +314,7 @@ ${validOptionsString}
 `;
     
     try {
+        const ai = getAi();
         const response = await ai.models.generateContent({
             model,
             contents: promptText,
